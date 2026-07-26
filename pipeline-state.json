@@ -1,0 +1,20 @@
+{
+  "schema_version": 2,
+  "revision": 0,
+  "project": "url-shortener",
+  "workspace": "workspace/url-shortener",
+  "repo_mode": "per-repo",
+  "profile": "LITE",
+  "current_phase": null,
+  "status": "pending",
+  "active_agents": [],
+  "phases": {},
+  "feedback_loops": [],
+  "pending_human_review": [],
+  "history": [],
+  "budget": {
+    "model_calls": {},
+    "notes": ""
+  },
+  "updated_at": null
+}

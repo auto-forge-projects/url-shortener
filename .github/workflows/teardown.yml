@@ -1,0 +1,48 @@
+name: "teardown (soft undeploy)"
+# Sunucudan KALDIRMA (soft): container'ı durdurur+siler, nginx bloğunu kaldırır, reload eder.
+# Repo/imaj SİLİNMEZ — tekrar deploy için push/workflow_dispatch yeter. Hard silme (repo dahil)
+# orchestrator tarafında (/pipeline-teardown ... hard) yapılır, burada değil.
+# url-shortener scaffold sırasında proje adıyla değiştirilir.
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: "onay: proje adını yaz"
+        required: true
+        type: string
+permissions:
+  contents: read
+jobs:
+  teardown:
+    runs-on: ubuntu-latest
+    if: ${{ inputs.confirm == 'url-shortener' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22.x"
+      - name: "read deploy.json"
+        id: cfg
+        run: |
+          node -e '
+            const c = require("./deploy.json"); const p = "url-shortener";
+            const host = (c.subdomain || "{project}").replace("{project}", p) + "." + c.domain;
+            const sn = c.secret_names || {};
+            const out = [
+              "host=" + host,
+              "secret_host=" + (sn.host || "DEPLOY_HOST"),
+              "secret_user=" + (sn.user || "DEPLOY_USER"),
+              "secret_key=" + (sn.key || "DEPLOY_SSH_KEY"),
+            ].join("\n");
+            require("fs").appendFileSync(process.env.GITHUB_OUTPUT, out + "\n");
+          '
+      - name: "ssh teardown"
+        env:
+          DEPLOY_SSH_KEY: ${{ secrets[steps.cfg.outputs.secret_key] }}
+          DEPLOY_HOST: ${{ secrets[steps.cfg.outputs.secret_host] }}
+          DEPLOY_USER: ${{ secrets[steps.cfg.outputs.secret_user] }}
+        run: |
+          set -euo pipefail
+          mkdir -p ~/.ssh && printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/id && chmod 600 ~/.ssh/id
+          ssh -o StrictHostKeyChecking=accept-new -i ~/.ssh/id "$DEPLOY_USER@$DEPLOY_HOST" \
+            "PROJECT='url-shortener' HOST='${{ steps.cfg.outputs.host }}' bash -s" < deploy/remote-teardown.sh

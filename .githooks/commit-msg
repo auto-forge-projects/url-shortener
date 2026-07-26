@@ -1,0 +1,8 @@
+#!/bin/sh
+# AutoForge — pipeline bitene kadar Actions susar. Faz 16 kapanışında .pipeline-complete
+# işareti oluşur → bu commit ve sonrası CI/deploy normal koşar. Bkz. README + CLAUDE.md kural 9.
+[ -f .pipeline-complete ] && exit 0
+# zaten skip işareti varsa dokunma (idempotent)
+grep -qiE "\[(skip ci|ci skip|no ci|skip actions|actions skip)\]" "$1" && exit 0
+printf "\n[skip ci]\n" >> "$1"
+exit 0

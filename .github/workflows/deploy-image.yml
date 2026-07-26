@@ -1,0 +1,114 @@
+name: "deploy (build + push + ssh)"
+# Repo-per-project SSH-push deploy: bu repo push'unda imajı GHCR'a push eder ve
+# sunucuya SSH ile deploy eder (deploy.json enabled:true ise). Sunucuda cron/ajan yok.
+# url-shortener scaffold sırasında proje adıyla değiştirilir.
+# GitHub Secrets (bir kez): DEPLOY_SSH_KEY[_SUFFIX], DEPLOY_HOST[_SUFFIX], DEPLOY_USER[_SUFFIX].
+# Hedef sunucu deploy.json.server + secret adları deploy.json.secret_names ile seçilir (çoklu sunucu).
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "image tag"
+        required: false
+        default: "latest"
+        type: string
+      rollback_sha:
+        description: "5.1: rollback — bu SHA'ya (GHCR'da mevcut :sha imajı) build ETMEDEN deploy et. Boş = normal (mevcut SHA build+deploy)."
+        required: false
+        default: ""
+        type: string
+permissions:
+  contents: read
+  packages: write
+jobs:
+  build-push:
+    runs-on: ubuntu-latest
+    outputs:
+      enabled: ${{ steps.gate.outputs.enabled }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: "enabled gate (deploy.json)"
+        id: gate
+        run: |
+          en="$(node -e "try{process.stdout.write(String(JSON.parse(require('fs').readFileSync('deploy.json','utf8')).enabled===true))}catch(e){process.stdout.write('false')}")"
+          echo "enabled=$en" >> "$GITHUB_OUTPUT"
+      - name: "GHCR login"
+        if: steps.gate.outputs.enabled == 'true'
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: "build & push"
+        # 5.1: rollback_sha verildiyse build ATLA — o SHA imajı GHCR'da zaten var, yalnız deploy edilecek.
+        if: steps.gate.outputs.enabled == 'true' && github.event.inputs.rollback_sha == ''
+        run: |
+          set -euo pipefail
+          OWNER="$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')"
+          IMG="ghcr.io/$OWNER/url-shortener"
+          docker build -t "$IMG:${{ inputs.tag || 'latest' }}" -t "$IMG:${GITHUB_SHA::12}" .
+          docker push "$IMG:${{ inputs.tag || 'latest' }}"
+          docker push "$IMG:${GITHUB_SHA::12}"
+  ssh-deploy:
+    needs: build-push
+    if: needs.build-push.outputs.enabled == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22.x"
+      - name: "read deploy.json"
+        id: cfg
+        run: |
+          node -e '
+            const c = require("./deploy.json"); const p = "url-shortener";
+            // 1.8: deploy YOLUNDA doğrulama (validateDeployConfig atlanıyordu). host_port/port TAM SAYI
+            // olmalı; değilse (elle bozulmuş deploy.json / config→shell enjeksiyon yüzeyi) burada DUR.
+            const isPort = (v) => Number.isInteger(v) && v >= 1 && v <= 65535;
+            if (!isPort(c.host_port)) { console.error("deploy.json.host_port geçersiz (1-65535 tam sayı): " + JSON.stringify(c.host_port)); process.exit(1); }
+            if (!isPort(c.port)) { console.error("deploy.json.port geçersiz (1-65535 tam sayı): " + JSON.stringify(c.port)); process.exit(1); }
+            const cert = String(c.cert_base || "");
+            if (!/^[A-Za-z0-9._/-]+$/.test(cert)) { console.error("deploy.json.cert_base güvensiz karakter içeriyor"); process.exit(1); }
+            const host = (c.subdomain || "{project}").replace("{project}", p) + "." + c.domain;
+            if (!/^[A-Za-z0-9.-]+$/.test(host)) { console.error("türetilen host geçersiz: " + host); process.exit(1); }
+            const sn = c.secret_names || {};
+            const out = [
+              "host=" + host, "host_port=" + c.host_port, "port=" + c.port, "cert_base=" + cert,
+              "healthcheck=" + (c.healthcheck || "/health"),
+              "secret_host=" + (sn.host || "DEPLOY_HOST"),
+              "secret_user=" + (sn.user || "DEPLOY_USER"),
+              "secret_key=" + (sn.key || "DEPLOY_SSH_KEY"),
+            ].join("\n");
+            require("fs").appendFileSync(process.env.GITHUB_OUTPUT, out + "\n");
+          '
+      - name: "ssh deploy"
+        env:
+          # Hedef sunucunun secret adları deploy.json.secret_names'ten gelir (çoklu sunucu).
+          DEPLOY_SSH_KEY: ${{ secrets[steps.cfg.outputs.secret_key] }}
+          DEPLOY_HOST: ${{ secrets[steps.cfg.outputs.secret_host] }}
+          DEPLOY_USER: ${{ secrets[steps.cfg.outputs.secret_user] }}
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GHCR_USER: ${{ github.actor }}
+          CFG_HOST: ${{ steps.cfg.outputs.host }}
+          CFG_HOST_PORT: ${{ steps.cfg.outputs.host_port }}
+          CFG_PORT: ${{ steps.cfg.outputs.port }}
+          CFG_CERT_BASE: ${{ steps.cfg.outputs.cert_base }}
+          CFG_HEALTHCHECK: ${{ steps.cfg.outputs.healthcheck }}
+        run: |
+          set -euo pipefail
+          mkdir -p ~/.ssh && printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/id && chmod 600 ~/.ssh/id
+          OWNER="$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')"
+          # 1.4: :latest DEĞİL, build edilen SHA'ya PİN — deterministik deploy + remote-deploy.sh
+          #      sağlık-kontrolü/rollback için "hangi sürüm canlı" bilinir.
+          # 5.1: rollback_sha verildiyse ONA deploy et (build atlandı), yoksa mevcut push SHA'sı.
+          TAG="${{ github.event.inputs.rollback_sha }}"; [ -z "$TAG" ] && TAG="${GITHUB_SHA::12}"
+          IMG="ghcr.io/$OWNER/url-shortener:$TAG"
+          # 1.8: sırlar (GHCR_TOKEN, SSH) uzak komut ARGÜMANINA gömülmez (ps/proc/history'de görünmez).
+          #      Değişkenler %q ile kaçışlanıp stdin üzerinden (script'in başına) aktarılır → argv temiz.
+          { printf 'export GHCR_TOKEN=%q GHCR_USER=%q PROJECT=%q IMAGE=%q HOST=%q HOST_PORT=%q PORT=%q CERT_BASE=%q HEALTHCHECK=%q\n' \
+              "$GHCR_TOKEN" "$GHCR_USER" "url-shortener" "$IMG" "$CFG_HOST" "$CFG_HOST_PORT" "$CFG_PORT" "$CFG_CERT_BASE" "$CFG_HEALTHCHECK"; \
+            cat deploy/remote-deploy.sh; } \
+            | ssh -o StrictHostKeyChecking=accept-new -i ~/.ssh/id "$DEPLOY_USER@$DEPLOY_HOST" bash -s

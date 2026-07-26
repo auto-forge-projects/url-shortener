@@ -1,0 +1,14 @@
+#!/bin/sh
+# AutoForge post-commit — iş listesini commit'ten güncelle + push (best-effort). Bkz. CLAUDE.md.
+msg=$(git log -1 --format=%s 2>/dev/null)
+top=$(git rev-parse --show-toplevel 2>/dev/null)
+proj=$(basename "$top")
+su="$top/../../scripts/state-update.mjs"
+if [ -f "$su" ]; then
+  case "$msg" in
+    phase\(*) node "$su" --project "$proj" --mark-task ALL_DONE >/dev/null 2>&1 || true ;;
+    *) t=$(printf "%s" "$msg" | grep -oE "TASK-[0-9]+" | head -1); [ -n "$t" ] && node "$su" --project "$proj" --mark-task "$t" >/dev/null 2>&1 || true ;;
+  esac
+fi
+git push -q origin HEAD >/dev/null 2>&1 || true
+exit 0

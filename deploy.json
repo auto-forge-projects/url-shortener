@@ -1,0 +1,21 @@
+{
+  "_comment": "Per-repo proje deploy config. enabled:true (VARSAYILAN AÇIK) → pipeline bitip push olunca imaj GHCR'a gider, ajan deploy eder. Kapatmak için enabled:false (dashboard \"Deploy'u kapat\"). Düz sır yok; secret_names sır ADLARINI işaret eder (değerleri GitHub Secrets'ta).",
+  "enabled": true,
+  "repo_mode": "per-repo",
+  "registry": "ghcr.io/auto-forge-projects",
+  "server": "main",
+  "domain": "apps.sametemek.com",
+  "subdomain": "{project}",
+  "proxy": "nginx",
+  "port": 3000,
+  "host_port": 5006,
+  "env_ref": "github-secrets",
+  "secret_names": {
+    "host": "DEPLOY_HOST",
+    "user": "DEPLOY_USER",
+    "key": "DEPLOY_SSH_KEY"
+  },
+  "tls": "wildcard",
+  "cert_base": "/etc/letsencrypt/live/apps.sametemek.com",
+  "healthcheck": "/health"
+}
