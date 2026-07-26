@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "revision": 7,
+  "revision": 10,
   "project": "url-shortener",
   "workspace": "workspace/url-shortener",
   "profile": "LITE",
@@ -52,6 +52,13 @@
       }
     ]
   },
-  "updated_at": "2026-07-26T23:58:07.460Z",
-  "default_mode": "AUTOPILOT"
+  "updated_at": "2026-07-26T23:58:24.776Z",
+  "default_mode": "AUTOPILOT",
+  "checkpoints": [
+    {
+      "phase": 0,
+      "at": "2026-07-26T23:58:11.847Z",
+      "note": "URL kısaltıcı: anonim, hesapsız kısalt+yönlendir MVP. Analitik/özel-kod/son-kullanma v1 dışı — sonraki fazlar bu minimal kapsamı temel alır."
+    }
+  ]
 }
