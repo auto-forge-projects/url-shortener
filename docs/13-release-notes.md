@@ -1,0 +1,45 @@
+# url-shortener v0.1.0 — Release Notes
+
+- Tarih: 2026-07-27 | SemVer: **v0.1.0** (0.x = API garanti yok) | Mod: AUTOPILOT
+> Sürüm, Faz 8 planındaki M1 milestone'u ile tutarlı (tek milestone, tüm FR'ler kapsandı).
+
+## Öne çıkanlar
+İlk sürüm: anonim, hesapsız URL kısaltma servisi. Sıfır çalışma-zamanı bağımlılığı (yalnız `node:http` + `node:sqlite` + `node:crypto`).
+
+## Özellikler
+- **FR-1** `POST /api/shorten` — geçerli http(s) URL için benzersiz 7 haneli base62 kod üretir (≤200ms p95), çakışmada ≤3 retry.
+- **FR-2** `GET /:code` — kayıtlı kod → 302 orijinal adrese; bilinmeyen kod → 404.
+- **FR-3** Geçersiz şema/sözdizimi/kontrol karakteri/2048 karakter üstü girdi → 400, hiçbir kayıt oluşturulmaz.
+- `GET /health` — servis durumu (deploy health-check + Docker `HEALTHCHECK` bunu kullanır).
+
+## Güvenlik (docs/07-security.md)
+- SEC-1: log/header injection savunması (kontrol karakteri reddi, IP hash'lenerek loglanır — ham IP diske yazılmaz).
+- SEC-2/SEC-14: URL doğrulama ağ/DNS çağrısı yapmaz; IP-literal hedefler (loopback/link-local/bulut metadata/özel aralık) reddedilir (derinlemesine savunma — DNS rebinding kapsam dışı, bkz. bilinen sınırlar).
+- SEC-6: SQL enjeksiyonuna karşı yalnız parametreli sorgu.
+- SEC-7: kod üretimi CSPRNG + rejection sampling (modulo bias yok).
+- Rate limiting (createHandler) + güvenlik başlıkları tüm yanıtlarda.
+- Risk kabulleri RA-1/RA-2/RA-3: DL-07-002'de kayıtlı, insan onayı bekliyor (`pending_human_review`).
+
+## Bilinen sınırlar (docs/15-maintenance.md'ye taşınacak)
+- DNS rebinding savunması yok (yalnız literal IP reddi) — teknik borç.
+- `deploy/remote-deploy.sh` `/data` volume mount etmiyor — her deploy'da SQLite dosyası sıfırlanabilir (DL-12-001, docs/12-cicd.md).
+- Gerçek çok-process race-condition testi yapılmadı (`node:sqlite` DatabaseSync tek-process senkron — DL-09-001/DL-11-001).
+- Analitik, özel kod seçimi, son kullanma tarihi kapsam dışı (Faz 0 checkpoint kararı — v1 dışı).
+
+## Kurulum
+```
+docker build -t url-shortener .
+docker run -d -p 3000:3000 -v url-shortener-data:/data url-shortener
+curl http://localhost:3000/health
+```
+Ortam: `PORT` (varsayılan 3000), `DB_PATH` (varsayılan `/data/links.db`).
+
+## Rollback planı (kalite kapısı)
+1. **Kod:** Önceki imaj tag'i (`ghcr.io/auto-forge-projects/url-shortener:<önceki-sha>`) ile `docker run` — `deploy-image.yml` her push'ta hem `latest` hem kısa-SHA tag'i ürettiğinden önceki SHA'ya anında dönülebilir.
+2. **Veri uyumluluğu:** Şema tek tablo (`links(code, url, created_at)`), v0.1.0'dan geriye downgrade veri kaybı YARATMAZ — DDL idempotent, sürümler arası şema değişikliği henüz yok.
+3. **Doğrulama:** Rollback sonrası `GET /health` → `{"status":"ok"}` ve bilinen bir kod ile `GET /:code` → 302 doğrulanır.
+4. **Dağıtım:** `deploy/remote-deploy.sh` önceki tag ile yeniden çalıştırılır (SSH-push mekanizması, host_port/nginx bloğu değişmez).
+
+## Kalite kapısı raporu
+- "Rollback prosedürü tanımlı" → ✅ (4 adım: kod/veri/doğrulama/dağıtım)
+- "Sürüm plana uygun" → ✅ (v0.1.0, Faz 8 M1 milestone ile tutarlı — tüm FR-1..3 kapsandı)

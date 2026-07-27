@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "revision": 92,
+  "revision": 95,
   "project": "url-shortener",
   "workspace": "workspace/url-shortener",
   "profile": "LITE",
@@ -212,6 +212,13 @@
       ],
       "note": "Dockerfile (node:22-alpine, non-root, /data volume, HEALTHCHECK) eklendi; build+run+/health dogrulandi (230MB imaj). CI/deploy workflow scaffolddan hazirdi, dokunulmadi."
     },
+    "13": {
+      "status": "done",
+      "mode": "AUTOPILOT",
+      "started_at": "2026-07-27T01:11:00.000Z",
+      "gate_passed": true,
+      "completed_at": "2026-07-27T00:00:00.000Z"
+    },
     "1-2": {
       "status": "done",
       "mode": "AUTOPILOT",
@@ -261,6 +268,11 @@
     },
     {
       "at": "2026-07-27T00:58:25.329Z",
+      "event": "zombie_agents_pruned",
+      "detail": "1 bayat ajan kaydı budandı (fazı koşmuyor — AF-090)"
+    },
+    {
+      "at": "2026-07-27T01:22:34.233Z",
       "event": "zombie_agents_pruned",
       "detail": "1 bayat ajan kaydı budandı (fazı koşmuyor — AF-090)"
     }
@@ -359,7 +371,7 @@
       }
     ]
   },
-  "updated_at": "2026-07-27T01:10:30.211Z",
+  "updated_at": "2026-07-27T01:22:34.234Z",
   "default_mode": "AUTOPILOT",
   "checkpoints": [
     {
