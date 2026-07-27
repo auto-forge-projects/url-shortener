@@ -1,10 +1,10 @@
 {
   "schema_version": 2,
-  "revision": 24,
+  "revision": 29,
   "project": "url-shortener",
   "workspace": "workspace/url-shortener",
   "profile": "LITE",
-  "current_phase": 4,
+  "current_phase": 5,
   "status": "running",
   "active_agents": [],
   "phases": {
@@ -72,6 +72,21 @@
       ],
       "completed_at": "2026-07-27T00:27:01.595Z"
     },
+    "5": {
+      "status": "done",
+      "mode": "AUTOPILOT",
+      "started_at": "2026-07-27T00:27:11.480Z",
+      "gate_passed": true,
+      "artifacts": [
+        "docs/05-architecture.md"
+      ],
+      "decisions": [
+        "DL-05-001",
+        "DL-05-002",
+        "DL-05-003"
+      ],
+      "completed_at": "2026-07-27T00:29:35.509Z"
+    },
     "1-2": {
       "status": "done",
       "mode": "AUTOPILOT",
@@ -97,6 +112,11 @@
       "event": "recovered",
       "phase": "1-2",
       "detail": "STALE_UNFLAGGED: gate geçiyordu, DL mevcuttu; status=done + commit fc89a39 ile kapatıldı ve push edildi"
+    },
+    {
+      "event": "phase_started",
+      "phase": "5",
+      "detail": "Mimari Tasarim - architect subagent devri (Opus)"
     }
   ],
   "budget": {
@@ -134,10 +154,18 @@
         "model_recommended": "opus",
         "gate_passed": true,
         "at": "2026-07-27T00:27:01.595Z"
+      },
+      {
+        "phase": "5",
+        "duration_s": 144,
+        "model": null,
+        "model_recommended": "opus",
+        "gate_passed": true,
+        "at": "2026-07-27T00:29:35.509Z"
       }
     ]
   },
-  "updated_at": "2026-07-27T00:27:01.596Z",
+  "updated_at": "2026-07-27T00:29:35.509Z",
   "default_mode": "AUTOPILOT",
   "checkpoints": [
     {
