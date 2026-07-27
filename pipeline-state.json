@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "revision": 79,
+  "revision": 81,
   "project": "url-shortener",
   "workspace": "workspace/url-shortener",
   "profile": "LITE",
@@ -13,7 +13,7 @@
       "phase": "9",
       "task": "Development TDD - 9 TASK",
       "started_at": "2026-07-27T00:37:21.000Z",
-      "last_update": "2026-07-27T00:53:44.564Z"
+      "last_update": "2026-07-27T00:53:46.465Z"
     }
   ],
   "phases": {
@@ -175,7 +175,7 @@
         },
         {
           "title": "TASK-009 e2e entegrasyon testleri",
-          "status": "in_progress"
+          "status": "done"
         }
       ]
     },
@@ -297,7 +297,7 @@
       }
     ]
   },
-  "updated_at": "2026-07-27T00:53:44.566Z",
+  "updated_at": "2026-07-27T00:57:49.652Z",
   "default_mode": "AUTOPILOT",
   "checkpoints": [
     {
