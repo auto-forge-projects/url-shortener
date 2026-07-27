@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "revision": 10,
+  "revision": 12,
   "project": "url-shortener",
   "workspace": "workspace/url-shortener",
   "profile": "LITE",
@@ -22,6 +22,13 @@
       "started_at": "2026-07-26T23:56:00.000Z",
       "gate_passed": true,
       "completed_at": "2026-07-26T23:59:00.000Z"
+    },
+    "1-2": {
+      "status": "done",
+      "mode": "AUTOPILOT",
+      "started_at": "2026-07-27T00:00:00.000Z",
+      "gate_passed": true,
+      "completed_at": "2026-07-27T00:05:00.000Z"
     }
   },
   "feedback_loops": [],
@@ -49,10 +56,18 @@
         "model_recommended": "haiku",
         "gate_passed": true,
         "at": "2026-07-26T23:59:00.000Z"
+      },
+      {
+        "phase": "1-2",
+        "duration_s": 300,
+        "model": null,
+        "model_recommended": "sonnet",
+        "gate_passed": true,
+        "at": "2026-07-27T00:05:00.000Z"
       }
     ]
   },
-  "updated_at": "2026-07-26T23:58:24.776Z",
+  "updated_at": "2026-07-27T00:10:42.323Z",
   "default_mode": "AUTOPILOT",
   "checkpoints": [
     {
