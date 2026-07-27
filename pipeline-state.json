@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "revision": 29,
+  "revision": 35,
   "project": "url-shortener",
   "workspace": "workspace/url-shortener",
   "profile": "LITE",
@@ -87,6 +87,46 @@
       ],
       "completed_at": "2026-07-27T00:29:35.509Z"
     },
+    "6": {
+      "status": "done",
+      "mode": "AUTOPILOT",
+      "started_at": "2026-07-27T00:30:02.919Z",
+      "gate_passed": true,
+      "artifacts": [
+        "docs/06-uiux/README.md"
+      ],
+      "decisions": [
+        "DL-06-001"
+      ],
+      "completed_at": "2026-07-27T00:35:54.028Z"
+    },
+    "7": {
+      "status": "done",
+      "mode": "AUTOPILOT",
+      "started_at": "2026-07-27T00:30:02.919Z",
+      "gate_passed": true,
+      "artifacts": [
+        "docs/07-security.md"
+      ],
+      "decisions": [
+        "DL-07-001",
+        "DL-07-002"
+      ],
+      "completed_at": "2026-07-27T00:35:54.029Z"
+    },
+    "8": {
+      "status": "done",
+      "mode": "AUTOPILOT",
+      "started_at": "2026-07-27T00:30:02.919Z",
+      "gate_passed": true,
+      "artifacts": [
+        "docs/08-plan.md"
+      ],
+      "decisions": [
+        "DL-08-001"
+      ],
+      "completed_at": "2026-07-27T00:35:54.029Z"
+    },
     "1-2": {
       "status": "done",
       "mode": "AUTOPILOT",
@@ -96,7 +136,13 @@
     }
   },
   "feedback_loops": [],
-  "pending_human_review": [],
+  "pending_human_review": [
+    {
+      "decision": "DL-07-002",
+      "konu": "Guvenlik risk kabulleri (RA-1/RA-2/RA-3)",
+      "aksiyon": "Kullanici /pipeline-decision ile onayla/reddet"
+    }
+  ],
   "history": [
     {
       "at": "2026-07-26T23:54:27.459Z",
@@ -117,6 +163,11 @@
       "event": "phase_started",
       "phase": "5",
       "detail": "Mimari Tasarim - architect subagent devri (Opus)"
+    },
+    {
+      "event": "phase_started",
+      "phase": "6,7,8",
+      "detail": "Paralel baslatildi (U-2, hepsi Faz 5 bagimliligi) - developer/security-reviewer/business-analyst devri"
     }
   ],
   "budget": {
@@ -162,10 +213,34 @@
         "model_recommended": "opus",
         "gate_passed": true,
         "at": "2026-07-27T00:29:35.509Z"
+      },
+      {
+        "phase": "6",
+        "duration_s": 351,
+        "model": null,
+        "model_recommended": "sonnet",
+        "gate_passed": true,
+        "at": "2026-07-27T00:35:54.028Z"
+      },
+      {
+        "phase": "7",
+        "duration_s": 351,
+        "model": null,
+        "model_recommended": "opus",
+        "gate_passed": true,
+        "at": "2026-07-27T00:35:54.029Z"
+      },
+      {
+        "phase": "8",
+        "duration_s": 351,
+        "model": null,
+        "model_recommended": "sonnet",
+        "gate_passed": true,
+        "at": "2026-07-27T00:35:54.029Z"
       }
     ]
   },
-  "updated_at": "2026-07-27T00:29:35.509Z",
+  "updated_at": "2026-07-27T00:35:54.029Z",
   "default_mode": "AUTOPILOT",
   "checkpoints": [
     {
@@ -173,5 +248,9 @@
       "at": "2026-07-26T23:58:11.847Z",
       "note": "URL kısaltıcı: anonim, hesapsız kısalt+yönlendir MVP. Analitik/özel-kod/son-kullanma v1 dışı — sonraki fazlar bu minimal kapsamı temel alır."
     }
-  ]
+  ],
+  "product": {
+    "name": "url-shortener",
+    "type": "service"
+  }
 }
