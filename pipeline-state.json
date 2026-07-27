@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "revision": 12,
+  "revision": 13,
   "project": "url-shortener",
   "workspace": "workspace/url-shortener",
   "profile": "LITE",
@@ -67,7 +67,7 @@
       }
     ]
   },
-  "updated_at": "2026-07-27T00:10:42.323Z",
+  "updated_at": "2026-07-27T00:10:44.671Z",
   "default_mode": "AUTOPILOT",
   "checkpoints": [
     {
