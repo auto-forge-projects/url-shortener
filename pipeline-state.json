@@ -1,21 +1,12 @@
 {
   "schema_version": 2,
-  "revision": 81,
+  "revision": 83,
   "project": "url-shortener",
   "workspace": "workspace/url-shortener",
   "profile": "LITE",
   "current_phase": 9,
   "status": "running",
-  "active_agents": [
-    {
-      "agent": "developer",
-      "model": "sonnet",
-      "phase": "9",
-      "task": "Development TDD - 9 TASK",
-      "started_at": "2026-07-27T00:37:21.000Z",
-      "last_update": "2026-07-27T00:53:46.465Z"
-    }
-  ],
+  "active_agents": [],
   "phases": {
     "0": {
       "mode": "AUTOPILOT",
@@ -137,7 +128,7 @@
       "completed_at": "2026-07-27T00:35:54.029Z"
     },
     "9": {
-      "status": "running",
+      "status": "done",
       "mode": "AUTOPILOT",
       "started_at": "2026-07-27T00:37:21.951Z",
       "tasks": [
@@ -177,7 +168,18 @@
           "title": "TASK-009 e2e entegrasyon testleri",
           "status": "done"
         }
-      ]
+      ],
+      "gate_passed": true,
+      "completed_at": "2026-07-27T00:58:30.000Z",
+      "artifacts": [
+        "src/",
+        "tests/",
+        "package.json"
+      ],
+      "decisions": [
+        "DL-09-001"
+      ],
+      "note": "9 TASK TDD ile tamamlandı (98 test yeşil, mekanik kapı: npm test + red→green commit sırası kanıtı geçti). Kesintili koşumdan (ORPHANED_RUN) resume edildi — diskte tam olan iş task-per-task test→impl commit çiftleri halinde push edildi."
     },
     "1-2": {
       "status": "done",
@@ -225,6 +227,11 @@
       "event": "phase_started",
       "phase": "9",
       "detail": "Development - developer subagent devri, TDD 9 TASK"
+    },
+    {
+      "at": "2026-07-27T00:58:25.329Z",
+      "event": "zombie_agents_pruned",
+      "detail": "1 bayat ajan kaydı budandı (fazı koşmuyor — AF-090)"
     }
   ],
   "budget": {
@@ -294,10 +301,18 @@
         "model_recommended": "sonnet",
         "gate_passed": true,
         "at": "2026-07-27T00:35:54.029Z"
+      },
+      {
+        "phase": "9",
+        "duration_s": 1268,
+        "model": null,
+        "model_recommended": "sonnet",
+        "gate_passed": true,
+        "at": "2026-07-27T00:58:30.000Z"
       }
     ]
   },
-  "updated_at": "2026-07-27T00:57:49.652Z",
+  "updated_at": "2026-07-27T00:58:25.329Z",
   "default_mode": "AUTOPILOT",
   "checkpoints": [
     {
