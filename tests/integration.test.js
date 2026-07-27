@@ -150,6 +150,28 @@ test('NFR-1: p95 shorten latency stays within 200ms across a batch of sequential
   }
 });
 
+test('FR-1 AC2: submitting the same URL twice yields two distinct, non-colliding codes, each independently persisted and redirectable', async () => {
+  const server = createServer({ dbPath: ':memory:', baseUrl: 'http://127.0.0.1' });
+  const port = await listen(server);
+  try {
+    const url = 'https://example.com/same-url-twice';
+    const first = await post(port, '/api/shorten', { url });
+    const second = await post(port, '/api/shorten', { url });
+    assert.equal(first.status, 201);
+    assert.equal(second.status, 201);
+    assert.notEqual(first.body.code, second.body.code, 'each submission of the same URL must get its own unique code');
+
+    const redirect1 = await get(port, `/${first.body.code}`);
+    const redirect2 = await get(port, `/${second.body.code}`);
+    assert.equal(redirect1.status, 302);
+    assert.equal(redirect1.location, url);
+    assert.equal(redirect2.status, 302);
+    assert.equal(redirect2.location, url);
+  } finally {
+    server.close();
+  }
+});
+
 test('malformed / oversized / wrong-content-type requests never create a reachable link', async () => {
   const server = createServer({ dbPath: ':memory:', baseUrl: 'http://127.0.0.1' });
   const port = await listen(server);

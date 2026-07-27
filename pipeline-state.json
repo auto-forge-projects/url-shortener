@@ -1,10 +1,10 @@
 {
   "schema_version": 2,
-  "revision": 83,
+  "revision": 86,
   "project": "url-shortener",
   "workspace": "workspace/url-shortener",
   "profile": "LITE",
-  "current_phase": 9,
+  "current_phase": 12,
   "status": "running",
   "active_agents": [],
   "phases": {
@@ -181,6 +181,21 @@
       ],
       "note": "9 TASK TDD ile tamamlandı (98 test yeşil, mekanik kapı: npm test + red→green commit sırası kanıtı geçti). Kesintili koşumdan (ORPHANED_RUN) resume edildi — diskte tam olan iş task-per-task test→impl commit çiftleri halinde push edildi."
     },
+    "11": {
+      "status": "done",
+      "mode": "AUTOPILOT",
+      "started_at": "2026-07-27T00:59:00.000Z",
+      "gate_passed": true,
+      "completed_at": "2026-07-27T01:05:00.000Z",
+      "artifacts": [
+        "docs/11-test/test-plan.md",
+        "docs/11-test/results.md"
+      ],
+      "decisions": [
+        "DL-11-001"
+      ],
+      "note": "16 kritik senaryo test edildi; FR/NFR izlenebilirlik tablosu tam. 1 eksik senaryo (FR-1 AC2, çift kısaltma çakışmasızlığı) tespit edilip tests/integration.test.js eklendi. 99/99 yeşil."
+    },
     "1-2": {
       "status": "done",
       "mode": "AUTOPILOT",
@@ -309,10 +324,18 @@
         "model_recommended": "sonnet",
         "gate_passed": true,
         "at": "2026-07-27T00:58:30.000Z"
+      },
+      {
+        "phase": "11",
+        "duration_s": 360,
+        "model": null,
+        "model_recommended": "sonnet",
+        "gate_passed": true,
+        "at": "2026-07-27T01:05:00.000Z"
       }
     ]
   },
-  "updated_at": "2026-07-27T00:58:25.329Z",
+  "updated_at": "2026-07-27T01:03:26.100Z",
   "default_mode": "AUTOPILOT",
   "checkpoints": [
     {
