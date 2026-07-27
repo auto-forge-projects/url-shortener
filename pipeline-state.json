@@ -1,11 +1,11 @@
 {
   "schema_version": 2,
-  "revision": 13,
+  "revision": 20,
   "project": "url-shortener",
   "workspace": "workspace/url-shortener",
   "profile": "LITE",
-  "current_phase": 0,
-  "status": "pending",
+  "current_phase": 3,
+  "status": "running",
   "active_agents": [],
   "phases": {
     "0": {
@@ -22,6 +22,41 @@
       "started_at": "2026-07-26T23:56:00.000Z",
       "gate_passed": true,
       "completed_at": "2026-07-26T23:59:00.000Z"
+    },
+    "3": {
+      "status": "done",
+      "mode": "AUTOPILOT",
+      "started_at": "2026-07-27T00:12:00.000Z",
+      "tasks": [
+        {
+          "title": "FR listesi + kabul kriterleri yaz",
+          "status": "done"
+        },
+        {
+          "title": "NFR tablosu (ölçülebilir) yaz",
+          "status": "done"
+        },
+        {
+          "title": "İzlenebilirlik tablosu + kapı raporu",
+          "status": "done"
+        },
+        {
+          "title": "DL-03-001 yaz",
+          "status": "done"
+        },
+        {
+          "title": "Kapıyı doğrula + commit talep et + push",
+          "status": "in_progress"
+        }
+      ],
+      "gate_passed": true,
+      "artifacts": [
+        "docs/03-requirements.md"
+      ],
+      "decisions": [
+        "DL-03-001"
+      ],
+      "completed_at": "2026-07-27T00:23:47.448Z"
     },
     "1-2": {
       "status": "done",
@@ -43,6 +78,11 @@
       "at": "2026-07-26T23:54:27.772Z",
       "event": "profile_changed",
       "detail": "LITE"
+    },
+    {
+      "event": "recovered",
+      "phase": "1-2",
+      "detail": "STALE_UNFLAGGED: gate geçiyordu, DL mevcuttu; status=done + commit fc89a39 ile kapatıldı ve push edildi"
     }
   ],
   "budget": {
@@ -64,10 +104,18 @@
         "model_recommended": "sonnet",
         "gate_passed": true,
         "at": "2026-07-27T00:05:00.000Z"
+      },
+      {
+        "phase": "3",
+        "duration_s": 707,
+        "model": null,
+        "model_recommended": "sonnet",
+        "gate_passed": true,
+        "at": "2026-07-27T00:23:47.448Z"
       }
     ]
   },
-  "updated_at": "2026-07-27T00:10:44.671Z",
+  "updated_at": "2026-07-27T00:23:47.450Z",
   "default_mode": "AUTOPILOT",
   "checkpoints": [
     {
