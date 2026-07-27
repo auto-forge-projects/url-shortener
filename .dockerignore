@@ -1,0 +1,17 @@
+.git
+.github
+.githooks
+node_modules
+tests
+docs
+decisions
+deploy
+data
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+pipeline-state.json
+README.md
+.gitignore
+.dockerignore

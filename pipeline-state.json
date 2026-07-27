@@ -1,10 +1,10 @@
 {
   "schema_version": 2,
-  "revision": 86,
+  "revision": 92,
   "project": "url-shortener",
   "workspace": "workspace/url-shortener",
   "profile": "LITE",
-  "current_phase": 12,
+  "current_phase": 13,
   "status": "running",
   "active_agents": [],
   "phases": {
@@ -196,6 +196,22 @@
       ],
       "note": "16 kritik senaryo test edildi; FR/NFR izlenebilirlik tablosu tam. 1 eksik senaryo (FR-1 AC2, çift kısaltma çakışmasızlığı) tespit edilip tests/integration.test.js eklendi. 99/99 yeşil."
     },
+    "12": {
+      "status": "done",
+      "mode": "AUTOPILOT",
+      "started_at": "2026-07-27T01:06:00.000Z",
+      "gate_passed": true,
+      "completed_at": "2026-07-27T01:10:00.000Z",
+      "artifacts": [
+        ".github/workflows/",
+        "Dockerfile",
+        "docs/12-cicd.md"
+      ],
+      "decisions": [
+        "DL-12-001"
+      ],
+      "note": "Dockerfile (node:22-alpine, non-root, /data volume, HEALTHCHECK) eklendi; build+run+/health dogrulandi (230MB imaj). CI/deploy workflow scaffolddan hazirdi, dokunulmadi."
+    },
     "1-2": {
       "status": "done",
       "mode": "AUTOPILOT",
@@ -332,20 +348,55 @@
         "model_recommended": "sonnet",
         "gate_passed": true,
         "at": "2026-07-27T01:05:00.000Z"
+      },
+      {
+        "phase": "12",
+        "duration_s": 240,
+        "model": null,
+        "model_recommended": "sonnet",
+        "gate_passed": true,
+        "at": "2026-07-27T01:10:00.000Z"
       }
     ]
   },
-  "updated_at": "2026-07-27T01:03:26.100Z",
+  "updated_at": "2026-07-27T01:10:30.211Z",
   "default_mode": "AUTOPILOT",
   "checkpoints": [
     {
       "phase": 0,
       "at": "2026-07-26T23:58:11.847Z",
       "note": "URL kısaltıcı: anonim, hesapsız kısalt+yönlendir MVP. Analitik/özel-kod/son-kullanma v1 dışı — sonraki fazlar bu minimal kapsamı temel alır."
+    },
+    {
+      "phase": 12,
+      "at": "2026-07-27T01:10:26.410Z",
+      "note": "url-shortener Dockerfile hazir (DB_PATH=/data/links.db, PORT=3000, non-root). Bilinen risk: deploy/remote-deploy.sh /data volume mount etmiyor, SQLite her deployda sifirlanabilir, Faz 15 teknik borcu."
     }
   ],
   "product": {
     "name": "url-shortener",
-    "type": "service"
+    "type": "service",
+    "version": "0.1.0",
+    "docker_image": "ghcr.io/auto-forge-projects/url-shortener",
+    "auto_run": false,
+    "commands": {
+      "build": "docker build -t url-shortener .",
+      "test": "npm test",
+      "run": "docker run -p 3000:3000 -v url-shortener-data:/data url-shortener"
+    },
+    "links": [
+      {
+        "label": "README",
+        "path": "README.md"
+      },
+      {
+        "label": "Mimari",
+        "path": "docs/05-architecture.md"
+      },
+      {
+        "label": "CI/CD notları",
+        "path": "docs/12-cicd.md"
+      }
+    ]
   }
 }
