@@ -3,6 +3,7 @@
 - Tarih: 2026-07-27 | Mod: AUTOPILOT | Profil: LITE
 - Girdi: `docs/03-requirements.md`, `docs/05-architecture.md`
 - Ürün özeti (tehdit yüzeyi): anonim (hesap YOK) URL kısaltıcı; `POST /api/shorten`, `GET /:code`, `GET /health`; `node:http` + `node:sqlite`; **sunucu kısaltılan URL'i ASLA fetch etmez** (yalnız 302 Location).
+- **REQ-003 delta (2026-07-31):** FR-4 ile ürün ilk kez **tarayıcıda kod çalıştıran bir HTML yüzeyi** kazanıyor (`GET /`, `GET /app.js`) → XSS (A03) artık *uygulanabilir*; yeni SEC-17..SEC-21 + delta değerlendirmesi aşağıda ("REQ-003 delta" bölümü). SEC-1..SEC-16 ve RA-1..RA-3 **değişmedi**.
 
 ## Varlıklar ve veri sınıflandırma
 | Veri | Sınıf | Nerede duruyor | Koruma |
@@ -84,10 +85,62 @@
 | RA-2 | Hedef URL'ler düz metin saklanır; query'de kullanıcı token'ı olabilir | Tek dosya SQLite'ta at-rest şifreleme anahtar yönetimi gerektirir; anahtar aynı host'ta durursa koruma büyük ölçüde teatral olur | Dosya izni 0600 + non-root + volume izolasyonu (SEC-12), logda redaksiyon (SEC-11), "gizli link kısaltmayın" uyarısı |
 | RA-3 | Ürün doğası gereği **açık yönlendiricidir**; üçüncü taraf sitelerin allowlist'lerinde kötüye kullanılabilir | Kısaltıcının işlevi budur; kapatmak ürünü ortadan kaldırır | Yalnız http/https (SEC-1), yönlendirme anında yeniden doğrulama (SEC-3), `no-referrer` + `no-store` (SEC-8), iç ağ denylist (SEC-14) |
 
+## REQ-003 delta (2026-07-31) — FR-4 web arayüzü (ilk HTML yüzeyi)
+
+Girdi: `docs/03-requirements.md` (FR-4), `docs/05-architecture.md` (REQ-003 delta) + DL-03-002 / DL-04-003 / DL-05-004.
+Mimari kararı (route'a özgü CSP + `textContent`) güvenlik açısından **teyit edildi** — aşağıda kendi checklist'ime bağlandı, yeniden icat edilmedi.
+
+### Yeni varlıklar / veri sınıflandırma (mevcut tablo bozulmadı, EK)
+| Veri | Sınıf | Nerede duruyor | Koruma |
+|------|-------|----------------|--------|
+| Kullanıcının forma girdiği URL (istemci tarafı) | **Confidential** (aynı sınıf, artık tarayıcıda da var) | Yalnız DOM/JS değişkeni (input değeri) — istek süresince | `localStorage`/`sessionStorage`/çerez/geçmiş listesi **YOK** (SEC-21); URL'in DOM'a yazımı yalnız `textContent` (SEC-17) |
+| Statik sayfa gövdesi + `app.js` | **Public** (sabit, kullanıcı verisi içermez) | `src/static-page.js` içinde sabit dize (bellek) | Şablonlama/interpolasyon YOK — istek verisi yanıt gövdesine hiç girmez (SEC-17/SEC-20) |
+| API hata kodu (`invalid_url`, `rate_limited`…) | Public | API yanıtı → DOM | Kod → **sabit istemci-içi metin** eşlemesi; sunucu metni/ayrıntısı yansıtılmaz (SEC-19) |
+
+### STRIDE — yeni bileşen (EK satır)
+| Bileşen | Spoofing | Tampering | Repudiation | Info Disclosure | DoS | Elevation | Önlemler |
+|---------|----------|-----------|-------------|-----------------|-----|-----------|----------|
+| `staticPageHandler` + istemci `app.js` | Sayfa taklidi/phishing (iframe, benzer alan adı) | Yanıta içerik enjeksiyonu (şablon/interpolasyon), MIME sniffing | Anonim (değişmedi) | Hata metniyle iç ayrıntı sızması; `Referer` ile hedef sızması | Sabit yanıtın yüksek hacimde çekilmesi | **DOM XSS** → aynı origin'de `POST /api/shorten` çağırma | SEC-17 (`textContent`, `innerHTML` yasak, href allowlist), SEC-18 (route'a özgü CSP + `frame-ancestors 'none'` + `nosniff` + açık `charset`), SEC-19 (sabit hata metni), SEC-20 (sabit/bellek-içi yanıt, `fs`/DB yok, tam yol + GET, log gürültüsü yok), SEC-21 (çerez/CORS/3P asset yok) |
+
+### CSP teyidi (DL-05-004 → güvenlik onayı)
+- Genel `default-src 'none'; frame-ancestors 'none'` **korunuyor**; gevşetme yalnız `GET /` ve `GET /app.js` yanıtlarında ve yalnız gerekli direktiflerde: `script-src 'self'` (harici script yok) + `connect-src 'self'` (yalnız kendi API'si). **`'unsafe-inline'`, `'unsafe-eval'`, `*`, `data:`, CDN kaynağı YASAK** (SEC-8 düşürülmedi).
+- `base-uri 'none'` + `form-action 'none'` **güvenlik kazancıdır, sınırlama değil**: JS çalışmazsa form hiçbir yere native POST etmez (fail-closed); Faz 9 submit'i `preventDefault` ile kesmelidir.
+- Görsel sadelik bilinçli takas: inline `<style>`/`style=` yok. CSS gerekirse **ayrı `GET /app.css` route'u + `style-src 'self'`** (aynı desen) — `'unsafe-inline'` ile çözmek Faz 10 Blocker'ıdır.
+
+### OWASP Top 10 — delta değerlendirmesi (her madde: bu değişiklik yargıyı değiştiriyor mu)
+| # | Delta etkisi | Karar |
+|---|--------------|-------|
+| A01 | Yeni yüzey yetki/nesne erişimi eklemiyor | Değişmedi — `/` ve `/app.js` kamuya açık sabit içerik; **diskten statik servis yok** (SEC-9 invaryantı korunur), tam yol eşleşmesi + yalnız GET (SEC-20) |
+| A02 | Sayfa sır taşımıyor | Değişmedi — HTTPS/HSTS proxy'de; istemcide kalıcı depolama yasak (SEC-21) |
+| A03 | **En önemli delta: yansıyan/DOM XSS artık UYGULANABİLİR** | `textContent`/`createTextNode` zorunlu; `innerHTML`/`outerHTML`/`insertAdjacentHTML`/`document.write`/`eval`/`new Function`/`setHTMLUnsafe` **YASAK**; sonuç `href`'i şema allowlist'inden geçer (SEC-17). CSP `script-src 'self'` **ikinci hat** (SEC-18). Sunucu tarafında sayfa gövdesine hiç kullanıcı verisi girmez → yansıyan XSS yüzeyi tasarımla sıfır |
+| A04 | Yeni yetenek yok, yalnız istemci | Değişmedi — RA-1/RA-3 aynen geçerli; **istemci-tarafı doğrulama güven sınırı DEĞİL** (NFR-2 sunucuda kalır, SEC-1) |
+| A05 | CSP/başlık yapılandırması genişledi | Evet — gevşetme route'a hapsedilir (SEC-18); `Content-Type: text/html; charset=utf-8` / `text/javascript; charset=utf-8` açıkça yazılır; `Cache-Control: no-store` korunur; **CORS başlığı eklenmez** (SEC-21) |
+| A06 | Bağımlılık eklemiyor | Değişmedi — framework/CDN/font/analytics YOK; SEC-13 sıfır-bağımlılık invaryantı sayfaya da uygulanır |
+| A07 | Oturum/çerez/hesap getirmiyor | Hâlâ **uygulanamaz** — CSRF de anlamsız kalır (çerez yok, kimlik yok). Sayfa "geçmiş/hesap" kazanırsa SEC-15 gereği bu doküman yeniden açılır |
+| A08 | İstemci artık dış veri (API yanıtı) tüketiyor | Evet — script yalnız kendi origin'inden gelir (SRI'ye gerek yok, harici asset yok); API yanıtı **güvenilmeyen veri** gibi işlenir: yalnız beklenen alanlar okunur, tip kontrol edilir (SEC-19) |
+| A09 | Yeni route trafik/log üretiyor | Evet — statik route her isteği loglamaz (log gürültüsü + disk/ambar maliyeti); yalnız anormal durum loglanır, log satırına kullanıcı girdisi yazılmaz (SEC-20, SEC-11 formatı korunur) |
+| A10 | Sunucu tarafı giden çağrı yok | Hâlâ **uygulanamaz** — `staticPageHandler` ağa/DNS'e çıkmaz; `fetch` **kullanıcının tarayıcısında** ve aynı origin'e yapılır. SEC-2 invaryantı bozulmadı (Faz 9 statik handler'a fetch/http.request EKLEMEZ) |
+
+### Rate limit / DoS kararı (SEC-4 bütçeleri değişmiyor)
+- `GET /` ve `GET /app.js` **`SHORTEN_RATE`/`REDIRECT_RATE` bütçelerini TÜKETMEZ** — mevcut kodda da kod-şekli olmayan GET yolları limiter'a dokunmadan 404 alıyor (`redirect-handler.js`: regex kontrolü limiter'dan ÖNCE); statik dallar bu davranışı sürdürür. Sayfayı yenilemek kullanıcının yönlendirme kotasını yememeli (DL-05-004 riski 4).
+- **Ayrı limiter da eklenmiyor** (ek durum + bellek + karmaşıklık, kazanç yok): yanıt bellekte sabit, DB/disk/`fs`/ağ erişimi yok, gövde ≤ 8 KB → istek başına maliyet mevcut 404 yolundan farklı değil. Telafi kontrolleri: SEC-5 timeout'ları, tek-süreç + nginx önü, Faz 14'te `/` istek hacmi izlenir. Kötüye kullanım görülürse `STATIC_RATE` (ör. 300/dk) hazır bir kol olarak eklenir — bu bir **risk kabulü değil**, ölçülü bir varsayılan.
+
+### Yeni Faz 9 güvenlik gereksinimleri (SEC-1..SEC-16 DEĞİŞMEDİ, EK)
+- [ ] **SEC-17 — XSS-güvenli DOM yazımı (A03, pazarlıksız):** Sonuç (`short_url`/`code`), kullanıcının girdiği URL ve hata metni DOM'a **yalnız** `textContent` / `createTextNode` ile yazılır. `innerHTML`, `outerHTML`, `insertAdjacentHTML`, `document.write`, `setHTMLUnsafe`, `eval`, `new Function`, string→HTML şablonu **kullanılmaz**; sunucu tarafında da sayfa gövdesine hiçbir istek verisi interpolate edilmez (sayfa sabit dize). Sonuç linki `<a href>` olarak gösterilecekse href **yalnız** `^https?://` ile başlıyor ve `location.origin`/`BASE_URL` önekiyle uyumluysa atanır (aksi hâlde yalnız metin) — kurcalanmış yanıtın `javascript:` href doğurması engellenir. Kopyalama `navigator.clipboard.writeText(<textContent>)` ile. **Kontrol:** `src/static-page.js` (ve varsa istemci JS dosyası) üzerinde bu sembolleri arayan bir test (SEC-16 deseninin aynısı) + Faz 10 blind review kontrolü.
+- [ ] **SEC-18 — Route'a özgü CSP (DL-05-004 teyidi):** `GET /` ve `GET /app.js` yanıtları `applySecurityHeaders`'ın üstüne `Content-Security-Policy: default-src 'none'; script-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'` yazar; **diğer route'ların başlıkları değişmez** (`applySecurityHeaders` içindeki genel `default-src 'none'` sabit kalır — testle çivilenir). `'unsafe-inline'`/`'unsafe-eval'`/`*`/harici origin YASAK. `Content-Type` her iki route'ta **charset ile** açık yazılır (`text/html; charset=utf-8`, `text/javascript; charset=utf-8`), `nosniff` + `no-store` korunur. **Test:** `GET /` başlıklarında `'unsafe-inline'` geçmediği + `GET /health` CSP'sinin ESKİ değerinde kaldığı.
+- [ ] **SEC-19 — Hata gösteriminde bilgi sızıntısı yok (SEC-8 ile tutarlı):** İstemci, yanıtın `error` **kodunu** okur ve **istemci içinde sabit** bir eşlemeyle kullanıcı metnine çevirir (`invalid_url` → "Geçerli bir http/https adresi girin", `rate_limited` → "Çok fazla istek, biraz sonra deneyin", bilinmeyen kod → jenerik "İşlem başarısız"). Sunucudan gelen serbest metin, stack trace, HTTP durum ayrıntısı, `Retry-After` dışı başlık ya da yanıt gövdesinin ham dökümü **gösterilmez/loglanmaz** (`console.log(response)` dahil). Yanıt JSON değilse / alan tipi beklenmedikse jenerik hata. **Not (uyumsuzluk):** FR-4 kabul kriteri 3 ve `docs/05` "400 yanıtının `message` alanı" diyor ama mevcut API yalnız `{"error":"invalid_url"}` döndürüyor (`src/create-handler.js`). **Doğru çözüm: API'ye ayrıntı EKLEMEK değil**, istemci-içi sabit eşleme; sunucu sözleşmesi (jenerik gövde) korunur.
+- [ ] **SEC-20 — Statik route sertleştirmesi:** Yalnız **tam** yol eşleşmesi (`/` ve `/app.js`; `/index.html`, `/app.js/`, `//`, `/APP.JS` eşleşmez → mevcut 404 yolu) ve yalnız `GET`(+`HEAD`); handler **hiçbir `fs`/DB/ağ çağrısı yapmaz**, yanıt bellekteki sabit dizedir (SEC-9 "statik dosya servisi yok" invaryantı korunur — kullanıcı yolu hiçbir zaman dosya adına dönüşmez). Gövde ≤ 8 KB, `Content-Length` sabit. SEC-4 bütçeleri tüketilmez; statik istekler için ayrıntılı log yazılmaz (yalnız 5xx). **Test:** `GET /` 200 + `GET /` sonrası bilinmeyen kodun hâlâ 404 dönmesi + dal SIRASI (kök yol catch-all'a düşmüyor).
+- [ ] **SEC-21 — İstemci durum/paylaşım yasakları (invaryant):** Çerez set edilmez/okunmaz, `localStorage`/`sessionStorage`/IndexedDB'ye URL veya geçmiş yazılmaz (Confidential veri istemcide kalıcılaşmaz; CSRF'in "uygulanamaz" statüsü de bu sayede korunur). `Access-Control-Allow-Origin` ve diğer CORS başlıkları **eklenmez** (API yalnız aynı origin'den çağrılır). Harici script/font/CSS/analitik/telemetri/CDN yok; `<form>` `action` başka origin'e gitmez; `target="_blank"` kullanılırsa `rel="noopener noreferrer"`. Yeni bir uç/oturum/çerez gerekirse **SEC-15 gereği bu doküman yeniden açılır**.
+
+### Delta kararı ve kalan risk
+- Karar: **DL-07-003** (route'a özgü CSP + `textContent` zorunluluğu + statik route bütçe muafiyeti).
+- **Yeni risk kabulü YOK** — RA-1..RA-3 aynen geçerli, delta yeni bir kalan risk üretmiyor (XSS azaltılıyor, kabul edilmiyor; statik route DoS'u telafi kontrolleriyle sınırlı). Bu yüzden bekleyen insan onayı eklenmedi.
+
 ## Kalite kapısı raporu
 - "OWASP Top 10 değerlendirildi" → ✅ A01–A10'un **onu da** ayrı satırda; her satırda uygulanabilirlik yargısı + önlem ya da uygulanamama gerekçesi (A07 ve A10 gerekçeli **uygulanamaz**, kalan 8'i uygulanabilir ve SEC maddelerine bağlı).
+- **REQ-003 deltası** → ✅ A01–A10'un **onu da yeniden** yargılandı (delta tablosu): A03 "uygulanabilir"e döndü (yeni HTML yüzeyi), A07/A10 gerekçeli **uygulanamaz** kaldı, kalan 7'nin durumu korundu/genişletildi; yeni varlıklar sınıflandırıldı (3 satır), yeni STRIDE bileşeni (`staticPageHandler`) eklendi, 5 yeni SEC maddesi (SEC-17..21) Faz 9'a devredildi; SEC-1..16 ve RA-1..3 **değiştirilmedi**.
 - "AI/tedarik zinciri tehditleri değerlendirildi" → ✅ Şablondaki **10 tehdidin tamamı** değerlendirildi (2'si uygulanamaz gerekçeli).
 - "Hassas veri sınıflandırması eksiksiz" → ✅ 7 varlık sınıflandırıldı (Confidential ×3, PII ×1, Public ×1, Internal ×2) + "sır yok" invaryantı açıkça kaydedildi.
 - SSRF netleştirmesi → ✅ A10 satırı + SEC-2 (test edilebilir invaryant) + SEC-14 (dolaylı risk, sınırı dokümante).
-- Faz 9 devri → ✅ 16 SEC maddesi, her biri test edilebilir; açık redirect (SEC-3), rate limiting (SEC-4), input validation (SEC-1/SEC-10) somut maddeler.
-- Decision Log → ✅ DL-07-001 (güvenlik duruşu), DL-07-002 (risk kabulleri — İnsan onayı: **Beklemede**).
+- Faz 9 devri → ✅ **21 SEC maddesi** (SEC-1..16 mevcut + SEC-17..21 REQ-003), her biri test edilebilir; açık redirect (SEC-3), rate limiting (SEC-4), input validation (SEC-1/SEC-10), XSS-güvenli DOM (SEC-17), route'a özgü CSP (SEC-18) somut maddeler.
+- Decision Log → ✅ DL-07-001 (güvenlik duruşu), DL-07-002 (risk kabulleri — İnsan onayı: **Onaylandı**, 2026-07-31), DL-07-003 (REQ-003 web arayüzü güvenlik kontrolleri — İnsan onayı: Otomatik, yeni risk kabulü yok).
