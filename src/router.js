@@ -7,11 +7,24 @@
 const { applySecurityHeaders } = require('./security-headers');
 
 /**
- * @param {{ shortenHandler: Function, redirectHandler: Function, healthHandler: Function }} handlers
+ * @param {{ shortenHandler: Function, redirectHandler: Function, healthHandler: Function,
+ *           staticPageHandler?: { handlePage: Function, handleScript: Function } }} handlers
  */
-function createRouter({ shortenHandler, redirectHandler, healthHandler }) {
+function createRouter({ shortenHandler, redirectHandler, healthHandler, staticPageHandler }) {
   return async function route(req, res) {
     const path = (req.url || '').split('?')[0];
+
+    // TASK-010 / FR-4 (REQ-003): must sit BEFORE the redirect catch-all below,
+    // otherwise '/' and '/app.js' would be treated as (invalid) short codes.
+    if (req.method === 'GET' && path === '/' && staticPageHandler) {
+      staticPageHandler.handlePage(req, res);
+      return;
+    }
+
+    if (req.method === 'GET' && path === '/app.js' && staticPageHandler) {
+      staticPageHandler.handleScript(req, res);
+      return;
+    }
 
     if (req.method === 'GET' && path === '/health') {
       healthHandler(req, res);

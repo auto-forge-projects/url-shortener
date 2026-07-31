@@ -15,6 +15,7 @@ const { generateCode } = require('./code-generator');
 const { createHandler } = require('./create-handler');
 const { createRedirectHandler } = require('./redirect-handler');
 const { createHealthHandler } = require('./health-handler');
+const { createStaticPageHandler } = require('./static-page-handler');
 const { createRouter } = require('./router');
 const { createRateLimiter } = require('./rate-limiter');
 
@@ -48,8 +49,9 @@ function createServer({ dbPath, baseUrl, shortenRateLimit, redirectRateLimit }) 
     rateLimiter: createRateLimiter(redirectRateLimit || REDIRECT_RATE)
   });
   const healthHandler = createHealthHandler();
+  const staticPageHandler = createStaticPageHandler();
 
-  const router = createRouter({ shortenHandler, redirectHandler, healthHandler });
+  const router = createRouter({ shortenHandler, redirectHandler, healthHandler, staticPageHandler });
 
   const server = http.createServer((req, res) => {
     router(req, res).catch(() => {
