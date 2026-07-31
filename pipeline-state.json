@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "revision": 106,
+  "revision": 115,
   "project": "url-shortener",
   "workspace": "workspace/url-shortener",
   "profile": "LITE",
@@ -217,7 +217,11 @@
       "mode": "AUTOPILOT",
       "started_at": "2026-07-27T01:11:00.000Z",
       "gate_passed": true,
-      "completed_at": "2026-07-27T00:00:00.000Z"
+      "completed_at": "2026-07-27T00:00:00.000Z",
+      "decisions": [
+        "DL-13-001",
+        "DL-13-002"
+      ]
     },
     "14": {
       "status": "done",
@@ -416,7 +420,7 @@
       }
     ]
   },
-  "updated_at": "2026-07-27T01:27:31.877Z",
+  "updated_at": "2026-07-31T00:46:19.526Z",
   "default_mode": "AUTOPILOT",
   "checkpoints": [
     {
@@ -455,5 +459,14 @@
         "path": "docs/12-cicd.md"
       }
     ]
+  },
+  "deploy": {
+    "status": "deployed",
+    "url": "https://url-shortener.apps.sametemek.com",
+    "server": "main",
+    "triggered_at": null,
+    "run": null,
+    "verified_at": "2026-07-27T18:48:42.376Z",
+    "verified_by": "probe"
   }
 }
