@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "revision": 149,
+  "revision": 150,
   "project": "url-shortener",
   "workspace": "workspace/url-shortener",
   "profile": "LITE",
@@ -154,7 +154,7 @@
         },
         {
           "title": "kapıyı doğrula + commit talep et + push",
-          "status": "in_progress"
+          "status": "done"
         }
       ],
       "gate_passed": true,
@@ -455,7 +455,7 @@
       }
     ]
   },
-  "updated_at": "2026-07-31T06:54:49.560Z",
+  "updated_at": "2026-07-31T06:54:54.253Z",
   "default_mode": "AUTOPILOT",
   "checkpoints": [
     {
