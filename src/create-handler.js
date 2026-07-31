@@ -35,8 +35,9 @@ const BODY_ERROR_STATUS = {
 
 /**
  * @param {{ service: ReturnType<typeof import('./link-service').createLinkService>,
- *           baseUrl: string, rateLimiter: ReturnType<typeof import('./rate-limiter').createRateLimiter>,
+ *           baseUrl?: string, rateLimiter: ReturnType<typeof import('./rate-limiter').createRateLimiter>,
  *           logSink?: { write: (line: string) => void } }} deps
+ *   `baseUrl` falsy (DL-06-001): response omits `short_url`, returns `{ code }` only.
  */
 function createHandler({ service, baseUrl, rateLimiter, logSink }) {
   return async function handleShorten(req, res) {
@@ -70,7 +71,8 @@ function createHandler({ service, baseUrl, rateLimiter, logSink }) {
     try {
       const { code } = service.shorten(validation.url);
       logEvent({ event: 'shortened', route: '/api/shorten', code, status: 201 }, logSink);
-      sendJson(res, 201, { code, short_url: `${baseUrl}/${code}` });
+      const payload = baseUrl ? { code, short_url: `${baseUrl}/${code}` } : { code };
+      sendJson(res, 201, payload);
     } catch (err) {
       logEvent({ event: 'shorten_failed', route: '/api/shorten', status: 500 }, logSink);
       sendJson(res, 500, { error: 'internal_error' });

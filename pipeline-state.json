@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "revision": 144,
+  "revision": 146,
   "project": "url-shortener",
   "workspace": "workspace/url-shortener",
   "profile": "LITE",
@@ -134,11 +134,11 @@
       "tasks": [
         {
           "title": "REQ-002: BASE_URL regresyon testi yaz (red)",
-          "status": "in_progress"
+          "status": "done"
         },
         {
           "title": "REQ-002: create-handler/server.js fix (green)",
-          "status": "pending"
+          "status": "in_progress"
         },
         {
           "title": "REQ-002: remote-deploy.sh BASE_URL env fix",
@@ -446,7 +446,7 @@
       }
     ]
   },
-  "updated_at": "2026-07-31T06:53:24.352Z",
+  "updated_at": "2026-07-31T06:54:00.473Z",
   "default_mode": "AUTOPILOT",
   "checkpoints": [
     {

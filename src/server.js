@@ -27,7 +27,7 @@ const SHORTEN_RATE = { windowMs: 60000, max: 10 };
 const REDIRECT_RATE = { windowMs: 60000, max: 120 };
 
 /**
- * @param {{ dbPath: string, baseUrl: string,
+ * @param {{ dbPath: string, baseUrl?: string,
  *           shortenRateLimit?: { windowMs: number, max: number },
  *           redirectRateLimit?: { windowMs: number, max: number } }} opts
  *   `*RateLimit` overrides exist for load/integration testing only — the
@@ -80,7 +80,9 @@ module.exports = { createServer };
 if (require.main === module) {
   const dbPath = process.env.DB_PATH || '/data/links.db';
   const port = Number(process.env.PORT) || 3000;
-  const baseUrl = process.env.BASE_URL || `http://localhost:${port}`;
+  // DL-06-001: no localhost fallback — BASE_URL unset in prod means the
+  // response omits `short_url` rather than returning an unreachable link.
+  const baseUrl = process.env.BASE_URL || '';
 
   let server;
   try {

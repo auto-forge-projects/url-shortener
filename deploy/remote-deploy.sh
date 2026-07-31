@@ -45,9 +45,13 @@ start_container() { # $1=imaj — eskiyi durdurup yeni container'ı başlatır
   # `rm -f`+`run` döngüsünde yeniden yaratılsa da SQLite dosyası (kısa linkler)
   # bu volume'da kalıcı kalır (Dockerfile VOLUME ["/data"] bildirimi tek başına
   # bunu garanti etmez, host tarafında isimli/bind mount şart).
+  # REQ-002/DL-12-003: BASE_URL olmadan short_url alanı hiç dönmüyordu
+  # (kod tarafı düzeltildi) ama doğru davranış prod'da GERÇEK domain ile
+  # short_url üretmek — bu yüzden container'a kendi https adresini geçiyoruz.
   docker run -d --name "$PROJECT" --restart unless-stopped \
     -p "127.0.0.1:${HOST_PORT}:${PORT}" \
     -v "${PROJECT}-data:/data" \
+    -e "BASE_URL=https://${HOST}" \
     "$1" >/dev/null
 }
 
