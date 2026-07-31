@@ -1,11 +1,11 @@
 {
   "schema_version": 2,
-  "revision": 116,
+  "revision": 117,
   "project": "url-shortener",
   "workspace": "workspace/url-shortener",
   "profile": "LITE",
-  "current_phase": 16,
-  "status": "completed",
+  "current_phase": "12",
+  "status": "running",
   "active_agents": [],
   "phases": {
     "0": {
@@ -197,9 +197,9 @@
       "note": "16 kritik senaryo test edildi; FR/NFR izlenebilirlik tablosu tam. 1 eksik senaryo (FR-1 AC2, çift kısaltma çakışmasızlığı) tespit edilip tests/integration.test.js eklendi. 99/99 yeşil."
     },
     "12": {
-      "status": "done",
+      "status": "running",
       "mode": "AUTOPILOT",
-      "started_at": "2026-07-27T01:06:00.000Z",
+      "started_at": "2026-07-31T03:53:07.156Z",
       "gate_passed": true,
       "completed_at": "2026-07-27T01:10:00.000Z",
       "artifacts": [
@@ -252,7 +252,14 @@
       "completed_at": "2026-07-27T00:05:00.000Z"
     }
   },
-  "feedback_loops": [],
+  "feedback_loops": [
+    {
+      "from": "REQ-001",
+      "to": "12",
+      "reason": "Kullanici raporu: uygulama acilmiyor -> kok neden TD-1/DL-12-001 (remote-deploy.sh /data icin kalici volume mount etmiyor)",
+      "at": "2026-07-31T03:53:00.000Z"
+    }
+  ],
   "pending_human_review": [
     {
       "decision": "DL-07-002",
@@ -262,44 +269,9 @@
   ],
   "history": [
     {
-      "at": "2026-07-26T23:54:27.459Z",
-      "event": "mode_changed",
-      "detail": "AUTOPILOT (aktif+sonrası; fazlar: 0)"
-    },
-    {
-      "at": "2026-07-26T23:54:27.772Z",
-      "event": "profile_changed",
-      "detail": "LITE"
-    },
-    {
-      "event": "recovered",
-      "phase": "1-2",
-      "detail": "STALE_UNFLAGGED: gate geçiyordu, DL mevcuttu; status=done + commit fc89a39 ile kapatıldı ve push edildi"
-    },
-    {
-      "event": "phase_started",
-      "phase": "5",
-      "detail": "Mimari Tasarim - architect subagent devri (Opus)"
-    },
-    {
-      "event": "phase_started",
-      "phase": "6,7,8",
-      "detail": "Paralel baslatildi (U-2, hepsi Faz 5 bagimliligi) - developer/security-reviewer/business-analyst devri"
-    },
-    {
-      "event": "phase_started",
-      "phase": "9",
-      "detail": "Development - developer subagent devri, TDD 9 TASK"
-    },
-    {
-      "at": "2026-07-27T00:58:25.329Z",
-      "event": "zombie_agents_pruned",
-      "detail": "1 bayat ajan kaydı budandı (fazı koşmuyor — AF-090)"
-    },
-    {
-      "at": "2026-07-27T01:22:34.233Z",
-      "event": "zombie_agents_pruned",
-      "detail": "1 bayat ajan kaydı budandı (fazı koşmuyor — AF-090)"
+      "at": "2026-07-31T03:53:00.000Z",
+      "event": "cycle_opened",
+      "detail": "REQ-001: Uygulama acilmiyor -> Faz 12 yeniden acildi (TD-1 kok neden duzeltmesi)"
     }
   ],
   "budget": {
@@ -420,7 +392,7 @@
       }
     ]
   },
-  "updated_at": "2026-07-31T03:52:59.338Z",
+  "updated_at": "2026-07-31T03:53:07.157Z",
   "default_mode": "AUTOPILOT",
   "checkpoints": [
     {
@@ -468,5 +440,19 @@
     "run": null,
     "verified_at": "2026-07-27T18:48:42.376Z",
     "verified_by": "probe"
-  }
+  },
+  "cycle": 2,
+  "requests": [
+    {
+      "id": "REQ-001",
+      "text": "Uygulama açılmıyor",
+      "at": "2026-07-31T03:53:00.000Z",
+      "status": "in_delta",
+      "phases": [
+        "12"
+      ],
+      "cycle": 2,
+      "notify_email": "sametemek@windowslive.com"
+    }
+  ]
 }
