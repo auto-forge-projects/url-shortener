@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "revision": 157,
+  "revision": 159,
   "project": "url-shortener",
   "workspace": "workspace/url-shortener",
   "profile": "LITE",
@@ -226,15 +226,16 @@
       "mode": "AUTOPILOT",
       "started_at": "2026-07-31T03:56:52.784Z",
       "gate_passed": true,
-      "completed_at": "2026-07-31T04:02:00.000Z",
+      "completed_at": "2026-07-31T06:59:00.000Z",
       "artifacts": [
         "docs/14-monitoring.md"
       ],
       "decisions": [
         "DL-14-001",
-        "DL-14-002"
+        "DL-14-002",
+        "DL-14-003"
       ],
-      "note": "REQ-001 delta: Kritik risk 2 notu cozuldu olarak guncellendi (DL-14-002)."
+      "note": "REQ-002 delta: Kritik risk 3 (BASE_URL) eklendi, cozuldu olarak isaretlendi (DL-14-003)."
     },
     "15": {
       "status": "done",
@@ -457,7 +458,7 @@
       }
     ]
   },
-  "updated_at": "2026-07-31T06:58:05.492Z",
+  "updated_at": "2026-07-31T06:58:49.222Z",
   "default_mode": "AUTOPILOT",
   "checkpoints": [
     {
