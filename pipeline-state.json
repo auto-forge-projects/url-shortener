@@ -1,10 +1,10 @@
 {
   "schema_version": 2,
-  "revision": 128,
+  "revision": 131,
   "project": "url-shortener",
   "workspace": "workspace/url-shortener",
   "profile": "LITE",
-  "current_phase": "15",
+  "current_phase": "16",
   "status": "running",
   "active_agents": [],
   "phases": {
@@ -248,9 +248,17 @@
     "15": {
       "status": "done",
       "mode": "AUTOPILOT",
-      "started_at": "2026-07-27T01:25:00.000Z",
+      "started_at": "2026-07-31T03:57:24.934Z",
       "gate_passed": true,
-      "completed_at": "2026-07-27T01:26:00.000Z"
+      "completed_at": "2026-07-31T04:03:00.000Z",
+      "artifacts": [
+        "docs/15-maintenance.md"
+      ],
+      "decisions": [
+        "DL-15-001",
+        "DL-15-002"
+      ],
+      "note": "REQ-001 delta: TD-1 kapandi olarak isaretlendi (DL-15-002)."
     },
     "16": {
       "status": "done",
@@ -284,10 +292,10 @@
   ],
   "history": [
     {
-      "at": "2026-07-31T04:02:00.000Z",
+      "at": "2026-07-31T04:03:00.000Z",
       "event": "phase_reclosed",
-      "phase": "14",
-      "detail": "REQ-001 delta: monitoring notu guncellendi, DL-14-002"
+      "phase": "15",
+      "detail": "REQ-001 delta: TD-1 kapandi, DL-15-002"
     }
   ],
   "budget": {
@@ -421,10 +429,18 @@
         "model_recommended": "sonnet",
         "gate_passed": true,
         "at": "2026-07-31T04:02:00.000Z"
+      },
+      {
+        "phase": "15",
+        "duration_s": 335,
+        "model": null,
+        "model_recommended": "haiku",
+        "gate_passed": true,
+        "at": "2026-07-31T04:03:00.000Z"
       }
     ]
   },
-  "updated_at": "2026-07-31T03:56:58.274Z",
+  "updated_at": "2026-07-31T03:57:30.046Z",
   "default_mode": "AUTOPILOT",
   "checkpoints": [
     {

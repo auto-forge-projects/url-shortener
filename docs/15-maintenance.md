@@ -9,7 +9,7 @@
 ## Teknik borç (kalite kapısı: önceliklendirilmiş)
 | # | Borç | Kaynak (DL/review bulgusu) | Öncelik (P1/P2/P3) | Not |
 |---|------|---------------------------|--------------------|-----|
-| TD-1 | `deploy/remote-deploy.sh` `/data`'yı `-v` ile bağlamıyor — her deploy'da SQLite dosyası sıfırlanabilir (NFR-3 ihlali riski) | DL-05-003 (mimari taahhüt), DL-12-001 (bilinen boşluk), DL-14-001/checkpoint Faz 12 | **P1** | Üretime gerçek deploy öncesi mutlaka kapatılmalı — veri kalıcılığını doğrudan etkiler |
+| TD-1 | ~~`deploy/remote-deploy.sh` `/data`'yı `-v` ile bağlamıyor~~ — **ÇÖZÜLDÜ v0.1.1** (↺ REQ-001, DL-12-002: isimli volume `${PROJECT}-data:/data`) | DL-05-003 (mimari taahhüt), DL-12-001 (bilinen boşluk) → DL-12-002 (çözüm) | ~~P1~~ Kapandı | Önceki deploy'larda oluşmuş veri kaybı geri getirilemez; bundan sonraki deploy'lar kalıcı |
 | TD-2 | `node:sqlite` Node 22'de deneyseldir; sürüm sabitlemesi (Dockerfile `node:22-alpine`) var ama Node minor güncellemelerinde API kırılma riski izlenmeli | DL-05-002, docs/05-architecture.md açık risk | P2 | Node LTS geçişlerinde regresyon testi çalıştır |
 | TD-3 | Log-tabanlı izleme; ayrı metrik/alert altyapısı yok (log satırından p95/error-rate manuel türetilir) | DL-14-001 | P3 | Trafik/kullanıcı sayısı arttığında Prometheus+alertmanager değerlendirilebilir |
 | TD-4 | Faz 10 (Code Review) LITE profilde atlandı — kod bağımsız denetimden geçmedi | `profiles.json` `LITE.skipped["10"]` (AF-112) | P2 | Ürün büyür/kritikleşirse STANDARD/FULL'a yükseltilip Faz 10 çalıştırılmalı (`/pipeline-upgrade`) |
