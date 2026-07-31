@@ -1,11 +1,11 @@
 {
   "schema_version": 2,
-  "revision": 168,
+  "revision": 173,
   "project": "url-shortener",
   "workspace": "workspace/url-shortener",
   "profile": "LITE",
-  "current_phase": 16,
-  "status": "completed",
+  "current_phase": "3",
+  "status": "running",
   "active_agents": [],
   "phases": {
     "0": {
@@ -26,27 +26,23 @@
     "3": {
       "status": "done",
       "mode": "AUTOPILOT",
-      "started_at": "2026-07-27T00:12:00.000Z",
+      "started_at": "2026-07-31T11:28:24.637Z",
       "tasks": [
         {
-          "title": "FR listesi + kabul kriterleri yaz",
+          "title": "FR-4 (Web arayüzü) yaz + kabul kriterleri",
           "status": "done"
         },
         {
-          "title": "NFR tablosu (ölçülebilir) yaz",
+          "title": "İzlenebilirlik tablosuna FR-4 ekle",
           "status": "done"
         },
         {
-          "title": "İzlenebilirlik tablosu + kapı raporu",
-          "status": "done"
-        },
-        {
-          "title": "DL-03-001 yaz",
+          "title": "DL-03-002 yaz (varsayım: statik HTML, framework yok)",
           "status": "done"
         },
         {
           "title": "Kapıyı doğrula + commit talep et + push",
-          "status": "done"
+          "status": "in_progress"
         }
       ],
       "gate_passed": true,
@@ -54,9 +50,11 @@
         "docs/03-requirements.md"
       ],
       "decisions": [
-        "DL-03-001"
+        "DL-03-001",
+        "DL-03-002"
       ],
-      "completed_at": "2026-07-27T00:23:47.448Z"
+      "completed_at": "2026-07-27T00:23:47.448Z",
+      "note": "REQ-003 delta: FR-4 (web arayüzü, GET / form) eklendi. Mevcut FR-1..3 sözleşmesi değişmedi."
     },
     "4": {
       "status": "done",
@@ -281,8 +279,14 @@
     {
       "from": "REQ-002",
       "to": "9",
-      "reason": "short_url yanıtı BASE_URL prod'da set edilmediği için localhost döner — dışarıdan erişilemez",
+      "reason": "short_url yanıtı BASE_URL prodda set edilmediği için localhost döner — dışarıdan erişilemez",
       "at": "2026-07-31T00:00:00.000Z"
+    },
+    {
+      "from": "REQ-003",
+      "to": "3",
+      "reason": "Kökte kullanılabilir bir web sayfası yok — yalnız API+health ucu var",
+      "at": "2026-07-31T11:28:41.000Z"
     }
   ],
   "pending_human_review": [],
@@ -464,7 +468,7 @@
       }
     ]
   },
-  "updated_at": "2026-07-31T11:27:16.035Z",
+  "updated_at": "2026-07-31T11:29:48.661Z",
   "default_mode": "AUTOPILOT",
   "checkpoints": [
     {
@@ -518,7 +522,7 @@
     "verified_at": "2026-07-27T18:48:42.376Z",
     "verified_by": "probe"
   },
-  "cycle": 3,
+  "cycle": 4,
   "requests": [
     {
       "id": "REQ-001",
@@ -543,6 +547,17 @@
       "cycle": 3,
       "notify_email": "sametemek@windowslive.com",
       "shipped_in": "v0.1.2"
+    },
+    {
+      "id": "REQ-003",
+      "text": "bu uygulamayla alakalı sadece sağlık ucu var. uygulamayı kullanabileceğim link yok. uygulamanın köküne uygulamayı kullanabileceğim bir web sayfası hazırlar mısın.",
+      "at": "2026-07-31T11:28:41.000Z",
+      "status": "in_delta",
+      "phases": [
+        "3"
+      ],
+      "cycle": 4,
+      "notify_email": "sametemek@windowslive.com"
     }
   ]
 }

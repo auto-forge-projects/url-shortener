@@ -1,6 +1,7 @@
 # 03 — Requirement Analizi: url-shortener
 
 - Tarih: 2026-07-27 | Mod: AUTOPILOT | Profil: LITE
+- **REQ-003 delta (2026-07-31):** FR-4 eklendi — kökte kullanılabilir bir web arayüzü (bkz. `docs/00-idea-v4.md`).
 
 ## Fonksiyonel gereksinimler
 
@@ -24,6 +25,15 @@
   - Given şeması http/https olmayan veya sözdizimi geçersiz bir girdi, when kısaltma isteği yapılır, then istek kayıt öncesi reddedilir (4xx) ve hiçbir eşleme oluşturulmaz.
 - **Öncelik:** Must
 
+### FR-4: Web arayüzünden kısaltma (REQ-003)
+- **User story:** Ziyaretçi olarak, uygulamanın kök adresine (`/`) tarayıcıdan girdiğimde bir form görmek ve URL kısaltabilmek istiyorum, böylece API'yi elle çağırmadan (curl/Postman) uygulamayı kullanabilirim.
+- **Kabul kriterleri (zorunlu):**
+  - Given kök yol (`GET /`), when tarayıcıdan istek gelir, then 200 döner ve bir URL girme formu içeren HTML sayfası gösterilir.
+  - Given form üzerinden geçerli bir URL gönderilir, when kısaltma isteği yapılır (formun kendi `POST /api/shorten` çağrısı üzerinden, FR-1), then sonuç kısa link aynı sayfada, kopyalanabilir biçimde gösterilir.
+  - Given form üzerinden geçersiz bir URL gönderilir, when istek reddedilir (FR-3), then sayfa hata mesajını (400 yanıtının `message` alanı) kullanıcıya gösterir, sayfa çökmez.
+- **Öncelik:** Must (talep sahibinin doğrudan ifade ettiği tek eksik: "kullanabileceğim link yok")
+- **Kapsam dışı (v1):** hesap/oturum, geçmiş link listesi, özel kod seçimi — mevcut FR-1..3 sözleşmesini genişletmez, yalnız var olan API'ye bir istemci ekler.
+
 ## Fonksiyonel olmayan gereksinimler (kalite kapısı: ölçülebilir)
 | ID | Kategori | Gereksinim | Ölçüt / Hedef |
 |----|----------|------------|----------------|
@@ -38,7 +48,8 @@
 | FR-1 | KPI-1: ≤200ms içinde benzersiz kısa kod üretimi |
 | FR-2 | KPI-2: Yönlendirme %100 doğruluk |
 | FR-3 | KPI-3: Geçersiz URL %100 red |
+| FR-4 | REQ-003: uygulamanın kullanılabilir bir erişim yüzeyi olması (talep sahibinin doğrudan ihtiyacı) |
 
 ## Kalite kapısı raporu
-- "Her FR'nin kabul kriteri var" → ✅ (FR-1..3, her biri Given/When/Then)
-- "NFR'ler ölçülebilir" → ✅ (NFR-1..4, sayısal/ikili ölçüt)
+- "Her FR'nin kabul kriteri var" → ✅ (FR-1..4, her biri Given/When/Then)
+- "NFR'ler ölçülebilir" → ✅ (NFR-1..4, sayısal/ikili ölçüt; FR-4 mevcut NFR'leri değiştirmiyor, yalnız mevcut API'nin önüne istemci ekliyor)
