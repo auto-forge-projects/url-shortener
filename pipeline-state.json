@@ -1,10 +1,10 @@
 {
   "schema_version": 2,
-  "revision": 204,
+  "revision": 206,
   "project": "url-shortener",
   "workspace": "workspace/url-shortener",
   "profile": "LITE",
-  "current_phase": "12",
+  "current_phase": "13",
   "status": "running",
   "active_agents": [],
   "phases": {
@@ -190,7 +190,7 @@
       "mode": "AUTOPILOT",
       "started_at": "2026-07-31T03:53:07.156Z",
       "gate_passed": true,
-      "completed_at": "2026-07-31T06:57:00.000Z",
+      "completed_at": "2026-07-31T12:00:00.000Z",
       "artifacts": [
         ".github/workflows/",
         "Dockerfile",
@@ -200,9 +200,10 @@
       "decisions": [
         "DL-12-001",
         "DL-12-002",
-        "DL-12-003"
+        "DL-12-003",
+        "DL-12-004"
       ],
-      "note": "REQ-002 delta: remote-deploy.sh start_container() artik -e BASE_URL=https://HOST ile prod domain geciriyor (DL-12-003). REQ-001 /data volume notu korunuyor."
+      "note": "REQ-003 delta: Dockerfile/CI/deploy betiği değişiklik gerektirmedi (DL-12-004) — COPY src ./src yeni dosyayı zaten kapsıyor."
     },
     "13": {
       "status": "done",
@@ -465,7 +466,7 @@
       }
     ]
   },
-  "updated_at": "2026-07-31T11:57:17.460Z",
+  "updated_at": "2026-07-31T11:58:00.017Z",
   "default_mode": "AUTOPILOT",
   "checkpoints": [
     {

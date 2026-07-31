@@ -45,9 +45,17 @@ yalnız BASE_URL yoksa alanı hiç döndürmüyor). `start_container()`'a
 `-e "BASE_URL=https://${HOST}"` eklendi — `HOST` zaten workflow'dan geçiyordu,
 ek secret gerekmedi. Bkz. DL-12-003.
 
+## REQ-003 delta yeniden doğrulama (2026-07-31, AF-091 — FR-4 web arayüzü)
+TASK-010 (`src/static-page-handler.js`) yeni bir bağımlılık, port, env değişkeni
+veya build adımı EKLEMEDİ — `Dockerfile`'ın `COPY src ./src` satırı yeni dosyayı
+zaten kapsıyor, `ci.yml`'nin `npm test` adımı yeni testleri (110/110) otomatik
+çalıştırıyor. Değişiklik gerekmediği doğrulandı (bkz. DL-12-004): imaj/registry/
+deploy betiği REQ-002'den beri değişmedi.
+
 ## Kalite kapısı raporu
 - ✅ Pipeline artefaktları mevcut: `ci.yml` + `deploy-image.yml` (scaffold) + yeni `Dockerfile`.
 - ✅ `Dockerfile` gerçekten build ediliyor (`docker build` başarılı, 230MB imaj).
 - ✅ İmaj çalışıyor ve `/health` 200 dönüyor (container-içi doğrulandı, `HEALTHCHECK: healthy`).
 - ⚠️ Host-portu-publish edilmiş dış erişim bu ortamda test edilemedi (sandbox `-p` kısıtı) — nedeni yukarıda not edildi, kanıt tiyatrosu yapılmadı.
 - ✅ SEC-12/SEC-13 gereksinimleri (non-root, `/data` volume, sabit imaj, `NODE_ENV=production`) Dockerfile'da karşılanıyor.
+- ✅ REQ-003 deltası → değişiklik gerekmediği doğrulandı (DL-12-004).
