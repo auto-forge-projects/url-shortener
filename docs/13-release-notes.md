@@ -1,7 +1,13 @@
-# url-shortener v0.1.0 — Release Notes
+# url-shortener v0.1.1 — Release Notes
 
-- Tarih: 2026-07-27 | SemVer: **v0.1.0** (0.x = API garanti yok) | Mod: AUTOPILOT
+- Tarih: 2026-07-31 | SemVer: **v0.1.1** (0.x = API garanti yok) | Mod: AUTOPILOT
 > Sürüm, Faz 8 planındaki M1 milestone'u ile tutarlı (tek milestone, tüm FR'ler kapsandı).
+
+## v0.1.1 — Değişiklik (↺ REQ-001, 2026-07-31)
+- **Kullanıcı talebi:** "Uygulama açılmıyor" — kök neden `deploy/remote-deploy.sh`'in `/data`'yı kalıcı bir Docker volume ile bağlamaması (DL-12-001'de zaten kayıtlı P1 teknik borç, TD-1).
+- **Düzeltme:** `start_container()` artık `-v "${PROJECT}-data:/data"` ile başlıyor (DL-12-002) — container her deploy'da yeniden yaratılsa da SQLite dosyası kalıcı kalır.
+- **Kapsam:** Yalnız deploy script'i değişti; `src/` (FR-1/2/3, NFR-1..4) DEĞİŞMEDİ.
+- **Bilinen sınır:** Bu düzeltmeden ÖNCEKİ deploy'larda oluşmuş veri kaybı geri getirilemez — yalnız BUNDAN SONRAKİ deploy'lar arasında kalıcılık garantilenir.
 
 ## Öne çıkanlar
 İlk sürüm: anonim, hesapsız URL kısaltma servisi. Sıfır çalışma-zamanı bağımlılığı (yalnız `node:http` + `node:sqlite` + `node:crypto`).
@@ -22,7 +28,7 @@
 
 ## Bilinen sınırlar (docs/15-maintenance.md'ye taşınacak)
 - DNS rebinding savunması yok (yalnız literal IP reddi) — teknik borç.
-- `deploy/remote-deploy.sh` `/data` volume mount etmiyor — her deploy'da SQLite dosyası sıfırlanabilir (DL-12-001, docs/12-cicd.md).
+- ~~`deploy/remote-deploy.sh` `/data` volume mount etmiyor~~ — **ÇÖZÜLDÜ v0.1.1'de** (DL-12-002, ↺ REQ-001).
 - Gerçek çok-process race-condition testi yapılmadı (`node:sqlite` DatabaseSync tek-process senkron — DL-09-001/DL-11-001).
 - Analitik, özel kod seçimi, son kullanma tarihi kapsam dışı (Faz 0 checkpoint kararı — v1 dışı).
 
