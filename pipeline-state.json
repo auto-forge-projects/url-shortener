@@ -1,21 +1,12 @@
 {
   "schema_version": 2,
-  "revision": 189,
+  "revision": 192,
   "project": "url-shortener",
   "workspace": "workspace/url-shortener",
   "profile": "LITE",
   "current_phase": "8",
   "status": "running",
-  "active_agents": [
-    {
-      "agent": "security-reviewer",
-      "model": "opus",
-      "phase": "7",
-      "task": "REQ-003 delta: Faz 7 guvenlik revalidasyonu",
-      "started_at": "2026-07-31T11:38:10.000Z",
-      "last_update": "2026-07-31T11:38:10.000Z"
-    }
-  ],
+  "active_agents": [],
   "phases": {
     "0": {
       "mode": "AUTOPILOT",
@@ -111,7 +102,7 @@
       "note": "REQ-003 delta: FR-4 icin Akis 4 (web arayuzunden kisaltma) + ekran taslagi eklendi. Erisilebilirlik notu guncellendi (DL-06-002)."
     },
     "7": {
-      "status": "running",
+      "status": "done",
       "mode": "AUTOPILOT",
       "started_at": "2026-07-31T11:38:07.239Z",
       "gate_passed": true,
@@ -120,9 +111,10 @@
       ],
       "decisions": [
         "DL-07-001",
-        "DL-07-002"
+        "DL-07-002",
+        "DL-07-003"
       ],
-      "completed_at": "2026-07-27T00:35:54.029Z"
+      "completed_at": "2026-07-31T11:45:00.000Z"
     },
     "8": {
       "status": "done",
@@ -144,28 +136,24 @@
       "started_at": "2026-07-31T04:08:36.756Z",
       "tasks": [
         {
-          "title": "REQ-002: BASE_URL regresyon testi yaz (red)",
+          "title": "TASK-010: static-page-handler + router/integration test yaz (red)",
           "status": "done"
         },
         {
-          "title": "REQ-002: create-handler/server.js fix (green)",
-          "status": "done"
+          "title": "TASK-010: static-page-handler.js + router.js + server.js implement (green)",
+          "status": "pending"
         },
         {
-          "title": "REQ-002: remote-deploy.sh BASE_URL env fix",
-          "status": "done"
+          "title": "npm test yeşil (104/104)",
+          "status": "pending"
         },
         {
-          "title": "npm test yeşil (100/100)",
-          "status": "done"
+          "title": "DL-09-003 yaz",
+          "status": "pending"
         },
         {
-          "title": "DL-09-002 yaz",
-          "status": "done"
-        },
-        {
-          "title": "kapıyı doğrula + commit talep et + push",
-          "status": "done"
+          "title": "HANDOFF/kapıyı doğrula + commit talep et + push",
+          "status": "pending"
         }
       ],
       "gate_passed": true,
@@ -305,30 +293,11 @@
   "pending_human_review": [],
   "history": [
     {
-      "at": "2026-07-31T04:05:00.000Z",
-      "event": "cycle_closed",
-      "detail": "REQ-001 v0.1.1 olarak yayinlandi"
+      "event": "recovered",
+      "detail": "STALE_UNFLAGGED faz 7: DL-07-003 eksikti, yazıldı; status=done olarak kapatıldı"
     },
     {
-      "event": "cycle_opened",
-      "detail": "REQ-002: BASE_URL prod fallback bugı — Faz 9 yeniden açıldı"
-    },
-    {
-      "at": "2026-07-31T04:08:51.552Z",
-      "event": "decision_approve",
-      "detail": "DL-07-002"
-    },
-    {
-      "event": "cycle_closed",
-      "detail": "REQ-002 v0.1.2 olarak yayinlandi"
-    },
-    {
-      "at": "2026-07-31T11:37:38.930Z",
-      "event": "zombie_agents_pruned",
-      "detail": "1 bayat ajan kaydı budandı (fazı koşmuyor — AF-090)"
-    },
-    {
-      "at": "2026-07-31T11:39:38.921Z",
+      "at": "2026-07-31T11:50:28.778Z",
       "event": "zombie_agents_pruned",
       "detail": "1 bayat ajan kaydı budandı (fazı koşmuyor — AF-090)"
     }
@@ -488,10 +457,18 @@
         "model_recommended": "sonnet",
         "gate_passed": true,
         "at": "2026-07-31T06:55:00.000Z"
+      },
+      {
+        "phase": "7",
+        "duration_s": 413,
+        "model": null,
+        "model_recommended": "opus",
+        "gate_passed": true,
+        "at": "2026-07-31T11:45:00.000Z"
       }
     ]
   },
-  "updated_at": "2026-07-31T11:40:18.882Z",
+  "updated_at": "2026-07-31T11:50:28.778Z",
   "default_mode": "AUTOPILOT",
   "checkpoints": [
     {
