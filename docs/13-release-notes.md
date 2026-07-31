@@ -1,7 +1,13 @@
-# url-shortener v0.1.1 — Release Notes
+# url-shortener v0.1.2 — Release Notes
 
-- Tarih: 2026-07-31 | SemVer: **v0.1.1** (0.x = API garanti yok) | Mod: AUTOPILOT
+- Tarih: 2026-07-31 | SemVer: **v0.1.2** (0.x = API garanti yok) | Mod: AUTOPILOT
 > Sürüm, Faz 8 planındaki M1 milestone'u ile tutarlı (tek milestone, tüm FR'ler kapsandı).
+
+## v0.1.2 — Değişiklik (↺ REQ-002, 2026-07-31)
+- **Kullanıcı talebi:** "https://url-shortener.apps.sametemek.com üzerinden erişim sağlayamıyorum" — kök neden `BASE_URL` prod'da hiçbir yerde set edilmediği için dönen `short_url`'ün her zaman `http://localhost:3000/<code>` olması (dışarıdan erişilemez).
+- **Düzeltme (iki parça):** (1) `src/create-handler.js`/`src/server.js`: `BASE_URL` yoksa yanıt yalnız `{ code }` döner, `short_url` hiç eklenmez — DL-06-001 sözleşmesi artık gerçekten uygulanıyor (DL-09-002). (2) `deploy/remote-deploy.sh`: `start_container()` artık `-e "BASE_URL=https://${HOST}"` geçiyor, prod'da gerçek çalışan `short_url` üretilir (DL-12-003).
+- **Kapsam:** FR-1/2/3 ve NFR'ler değişmedi; `GET /:code` yönlendirmesi zaten `BASE_URL`'den bağımsızdı, dokunulmadı.
+- **Test:** `create-handler.test.js`'e 1 regresyon testi eklendi (BASE_URL yoksa code-only) — 100/100 yeşil.
 
 ## v0.1.1 — Değişiklik (↺ REQ-001, 2026-07-31)
 - **Kullanıcı talebi:** "Uygulama açılmıyor" — kök neden `deploy/remote-deploy.sh`'in `/data`'yı kalıcı bir Docker volume ile bağlamaması (DL-12-001'de zaten kayıtlı P1 teknik borç, TD-1).

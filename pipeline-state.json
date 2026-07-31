@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "revision": 155,
+  "revision": 157,
   "project": "url-shortener",
   "workspace": "workspace/url-shortener",
   "profile": "LITE",
@@ -209,16 +209,17 @@
       "mode": "AUTOPILOT",
       "started_at": "2026-07-31T03:56:06.461Z",
       "gate_passed": true,
-      "completed_at": "2026-07-31T04:01:00.000Z",
+      "completed_at": "2026-07-31T06:58:00.000Z",
       "decisions": [
         "DL-13-001",
         "DL-13-002",
-        "DL-13-003"
+        "DL-13-003",
+        "DL-13-004"
       ],
       "artifacts": [
         "docs/13-release-notes.md"
       ],
-      "note": "REQ-001 delta: patch bump v0.1.0 -> v0.1.1, release notes REQ-001 degisikligi + bilinen sinir cozuldu notu."
+      "note": "REQ-002 delta: patch bump v0.1.1 -> v0.1.2, release notes REQ-002 degisikligi eklendi."
     },
     "14": {
       "status": "done",
@@ -456,7 +457,7 @@
       }
     ]
   },
-  "updated_at": "2026-07-31T06:57:02.657Z",
+  "updated_at": "2026-07-31T06:58:05.492Z",
   "default_mode": "AUTOPILOT",
   "checkpoints": [
     {
@@ -478,7 +479,7 @@
   "product": {
     "name": "url-shortener",
     "type": "service",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "docker_image": "ghcr.io/auto-forge-projects/url-shortener",
     "auto_run": false,
     "commands": {
