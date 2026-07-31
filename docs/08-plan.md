@@ -1,6 +1,7 @@
 # 08 — Planlama: url-shortener
 
 - Tarih: 2026-07-27 | Mod: AUTOPILOT | Profil: LITE
+- **REQ-003 delta (2026-07-31):** M2 + TASK-010 eklendi (FR-4 web arayüzü).
 
 > LITE: milestone + önceliklendirilmiş backlog (sprint kırılımı yok).
 
@@ -8,6 +9,7 @@
 | M | Hedef | Kapsanan FR'ler | Hedef tarih |
 |---|-------|-----------------|-------------|
 | M1 | Çalışan url-shortener servisi (kısalt+yönlendir+doğrula) | FR-1, FR-2, FR-3 | 2026-07-28 |
+| M2 | Web arayüzü (REQ-003) | FR-4 | 2026-07-31 |
 
 ## Backlog (önceliklendirilmiş, GitHub Issues formatına uyumlu)
 
@@ -65,6 +67,12 @@
 - **FR:** FR-1, FR-2, FR-3
 - **Kabul:** Kısalt→yönlendir→404 senaryoları %100 geçer (NFR-1..4 kapsanır).
 
+### [M2] TASK-010: staticPageHandler (GET / + GET /app.js) — REQ-003
+- **Tahmin:** 0.5 gün
+- **Bağımlılık:** TASK-008
+- **FR:** FR-4
+- **Kabul:** `GET /` 200 + form HTML; `GET /app.js` 200 + script; route'lar catch-all redirect'ten ÖNCE (DL-05-004); sonuç/hata `textContent` ile (DL-06-002/Faz 7); mevcut `GET /:code` 404 davranışı bozulmadı (regresyon testi).
+
 ## Bağımlılık grafı (kalite kapısı: çevrimsiz)
 ```mermaid
 graph LR
@@ -79,8 +87,9 @@ graph LR
   TASK-006 --> TASK-008
   TASK-007 --> TASK-008
   TASK-008 --> TASK-009
+  TASK-008 --> TASK-010
 ```
 
 ## Kalite kapısı raporu
-- "Her task 1 günden küçük" → ✅ (en uzun TASK-004 = 1 gün, diğerleri ≤0.5 gün)
-- "Bağımlılık grafı çevrimsiz" → ✅ (DAG: 001→{002,003,004}→005→{006,007}→008→009, geri kenar yok)
+- "Her task 1 günden küçük" → ✅ (en uzun TASK-004 = 1 gün, diğerleri ≤0.5 gün, TASK-010 = 0.5 gün)
+- "Bağımlılık grafı çevrimsiz" → ✅ (DAG: 001→{002,003,004}→005→{006,007}→008→{009,010}, geri kenar yok)

@@ -1,10 +1,10 @@
 {
   "schema_version": 2,
-  "revision": 186,
+  "revision": 189,
   "project": "url-shortener",
   "workspace": "workspace/url-shortener",
   "profile": "LITE",
-  "current_phase": "6",
+  "current_phase": "8",
   "status": "running",
   "active_agents": [
     {
@@ -127,7 +127,7 @@
     "8": {
       "status": "done",
       "mode": "AUTOPILOT",
-      "started_at": "2026-07-27T00:30:02.919Z",
+      "started_at": "2026-07-31T11:39:46.428Z",
       "gate_passed": true,
       "artifacts": [
         "docs/08-plan.md"
@@ -135,7 +135,8 @@
       "decisions": [
         "DL-08-001"
       ],
-      "completed_at": "2026-07-27T00:35:54.029Z"
+      "completed_at": "2026-07-27T00:35:54.029Z",
+      "note": "REQ-003 delta: M2/TASK-010 eklendi (staticPageHandler). Mevcut TASK-001..009 degismedi (DL-08-002)."
     },
     "9": {
       "status": "done",
@@ -490,7 +491,7 @@
       }
     ]
   },
-  "updated_at": "2026-07-31T11:39:38.921Z",
+  "updated_at": "2026-07-31T11:40:18.882Z",
   "default_mode": "AUTOPILOT",
   "checkpoints": [
     {
