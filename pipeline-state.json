@@ -1,12 +1,21 @@
 {
   "schema_version": 2,
-  "revision": 181,
+  "revision": 186,
   "project": "url-shortener",
   "workspace": "workspace/url-shortener",
   "profile": "LITE",
-  "current_phase": "5",
+  "current_phase": "6",
   "status": "running",
-  "active_agents": [],
+  "active_agents": [
+    {
+      "agent": "security-reviewer",
+      "model": "opus",
+      "phase": "7",
+      "task": "REQ-003 delta: Faz 7 guvenlik revalidasyonu",
+      "started_at": "2026-07-31T11:38:10.000Z",
+      "last_update": "2026-07-31T11:38:10.000Z"
+    }
+  ],
   "phases": {
     "0": {
       "mode": "AUTOPILOT",
@@ -90,7 +99,7 @@
     "6": {
       "status": "done",
       "mode": "AUTOPILOT",
-      "started_at": "2026-07-27T00:30:02.919Z",
+      "started_at": "2026-07-31T11:38:50.259Z",
       "gate_passed": true,
       "artifacts": [
         "docs/06-uiux/README.md"
@@ -98,12 +107,13 @@
       "decisions": [
         "DL-06-001"
       ],
-      "completed_at": "2026-07-27T00:35:54.028Z"
+      "completed_at": "2026-07-27T00:35:54.028Z",
+      "note": "REQ-003 delta: FR-4 icin Akis 4 (web arayuzunden kisaltma) + ekran taslagi eklendi. Erisilebilirlik notu guncellendi (DL-06-002)."
     },
     "7": {
-      "status": "done",
+      "status": "running",
       "mode": "AUTOPILOT",
-      "started_at": "2026-07-27T00:30:02.919Z",
+      "started_at": "2026-07-31T11:38:07.239Z",
       "gate_passed": true,
       "artifacts": [
         "docs/07-security.md"
@@ -315,6 +325,11 @@
       "at": "2026-07-31T11:37:38.930Z",
       "event": "zombie_agents_pruned",
       "detail": "1 bayat ajan kaydı budandı (fazı koşmuyor — AF-090)"
+    },
+    {
+      "at": "2026-07-31T11:39:38.921Z",
+      "event": "zombie_agents_pruned",
+      "detail": "1 bayat ajan kaydı budandı (fazı koşmuyor — AF-090)"
     }
   ],
   "budget": {
@@ -475,7 +490,7 @@
       }
     ]
   },
-  "updated_at": "2026-07-31T11:37:48.471Z",
+  "updated_at": "2026-07-31T11:39:38.921Z",
   "default_mode": "AUTOPILOT",
   "checkpoints": [
     {
@@ -497,6 +512,11 @@
       "phase": 3,
       "at": "2026-07-31T11:31:20.228Z",
       "note": "REQ-003: FR-4 eklendi — GET / bir HTML form döner, mevcut POST /api/shorten (FR-1) çağrısını kullanır. FR-1..3 sözleşmesi değişmedi."
+    },
+    {
+      "phase": 5,
+      "at": "2026-07-31T11:37:59.768Z",
+      "note": "REQ-003: GET /app.js ve GET / router.js catch-all GET-redirect dalindan ONCE eklenmeli. Statik routelar route-a-ozgu CSP tasir (script-src/connect-src self), genel CSP degismez. Sonuc/hata DOMa textContent ile yazilir (XSS)."
     }
   ],
   "product": {
