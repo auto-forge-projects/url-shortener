@@ -20,5 +20,13 @@
 - **Error rate:** 5xx oranı log'dan (`status>=500` satır sayısı / toplam) hesaplanabilir; ayrı dashboard/alerting altyapısı bu ölçekte (LITE, solo) kurulmadı — bilinçli kapsam dışı.
 - **Kritik risk 3 — yanlış short_url (BASE_URL) — ÇÖZÜLDÜ v0.1.2 (↺ REQ-002, DL-09-002/DL-12-003):** prod'da `BASE_URL` artık `deploy/remote-deploy.sh` tarafından set ediliyor; kod tarafı yoksa `short_url` alanını hiç döndürmüyor (sessizce `localhost` üretmiyor). Bu davranışın kalıcı doğrulaması: her `POST /api/shorten` cevabında `short_url`'ün `https://` ile başladığının smoke-test'i deploy sonrası önerilir (LITE'ta ayrı bir prob otomasyonu kurulmadı — bilinçli kapsam dışı, gerekirse Faz 15 TD adayı).
 
+## REQ-003 delta yeniden doğrulama (2026-07-31, AF-091 — FR-4 web arayüzü)
+Yeni statik route'lar (`GET /`, `GET /app.js`) **yeni kritik risk üretmiyor**: SEC-20
+gereği bellekteki sabit yanıt, `fs`/DB/ağ çağrısı yok, SEC-4 rate-limit bütçesi
+tüketilmiyor (DoS yüzeyi mevcut 404 yolundan farklı değil — Faz 7 delta kararı).
+Bu yüzden yeni bir alert/health kontrolü eklenmedi; mevcut `GET /health` ve
+latency/error-rate log'ları yeterli kabul edildi (DL-14-004).
+
 ## Kalite kapısı raporu
 - "Kritik akışlar için alert/hata görünürlüğü tanımlı" → ✅ (health check + yapılandırılmış log satırı + DB kalıcılık riski açıkça izlenebilir kılındı; ayrı metrik/alert altyapısı LITE kapsamı dışı, DL'de gerekçelendirildi)
+- REQ-003 deltası → ✅ yeni kritik risk yok, ek alert gerekmedi (DL-14-004).

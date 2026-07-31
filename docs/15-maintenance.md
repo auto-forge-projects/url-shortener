@@ -23,5 +23,15 @@
 - Her sürüm öncesi: `npm test` (100 test) yeşil + `docker build` başarılı kontrolü.
 - 3 ayda bir: Node LTS güncellemesi değerlendirmesi + TD-1'in (volume mount) hâlâ açık olup olmadığının kontrolü.
 
+## REQ-003 delta yeniden doğrulama (2026-07-31, AF-091 — FR-4 web arayüzü)
+FR-4 implementasyonu kapanışta iki sapma açığa çıkardı, **ikisi de aynı oturumda
+düzeltildi** (yeni TD açılmadı, bkz. DL-09-003): whole-repo SEC-2 test
+yanlış-pozitifi ve istemci kodunun var olmayan bir sunucu alanını (`data.message`)
+okuması (SEC-19 ihlali). TD-4 (Faz 10 LITE'ta atlanıyor) hâlâ geçerli — bu iki
+sapma, bağımsız bir code review OLMADAN, yalnız Faz 9 kapanış doğrulaması
+sırasında yakalandı; ürün büyürse TD-4 gereği STANDARD'a yükseltme önerisi
+güçleniyor.
+
 ## Kalite kapısı raporu
 - "Teknik borç önceliklendirilmiş" → ✅ (4 borç, her biri kaynak DL/review referansıyla izlenebilir, öncelik atanmış)
+- REQ-003 deltası → ✅ yeni teknik borç açılmadı (kapanışta bulunan sapmalar aynı oturumda düzeltildi).

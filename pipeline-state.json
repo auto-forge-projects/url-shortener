@@ -1,10 +1,10 @@
 {
   "schema_version": 2,
-  "revision": 208,
+  "revision": 210,
   "project": "url-shortener",
   "workspace": "workspace/url-shortener",
   "profile": "LITE",
-  "current_phase": "14",
+  "current_phase": "16",
   "status": "running",
   "active_agents": [],
   "phases": {
@@ -228,48 +228,51 @@
       "mode": "AUTOPILOT",
       "started_at": "2026-07-31T03:56:52.784Z",
       "gate_passed": true,
-      "completed_at": "2026-07-31T06:59:00.000Z",
+      "completed_at": "2026-07-31T12:02:00.000Z",
       "artifacts": [
         "docs/14-monitoring.md"
       ],
       "decisions": [
         "DL-14-001",
         "DL-14-002",
-        "DL-14-003"
+        "DL-14-003",
+        "DL-14-004"
       ],
-      "note": "REQ-002 delta: Kritik risk 3 (BASE_URL) eklendi, cozuldu olarak isaretlendi (DL-14-003)."
+      "note": "REQ-003 delta: yeni kritik risk yok, ek alert gerekmedi (DL-14-004)."
     },
     "15": {
       "status": "done",
       "mode": "AUTOPILOT",
       "started_at": "2026-07-31T03:57:24.934Z",
       "gate_passed": true,
-      "completed_at": "2026-07-31T07:00:00.000Z",
+      "completed_at": "2026-07-31T12:03:00.000Z",
       "artifacts": [
         "docs/15-maintenance.md"
       ],
       "decisions": [
         "DL-15-001",
         "DL-15-002",
-        "DL-15-003"
+        "DL-15-003",
+        "DL-15-004"
       ],
-      "note": "REQ-002 delta: test kor noktasi kapandi olarak isaretlendi (DL-15-003), yeni TD acilmadi."
+      "note": "REQ-003 delta: yeni teknik borç açılmadı (DL-15-004)."
     },
     "16": {
       "status": "done",
       "mode": "AUTOPILOT",
       "started_at": "2026-07-31T03:58:11.578Z",
       "gate_passed": true,
-      "completed_at": "2026-07-31T07:15:00.000Z",
+      "completed_at": "2026-07-31T12:04:00.000Z",
       "artifacts": [
         "docs/16-retro.md"
       ],
       "decisions": [
         "DL-16-001",
         "DL-16-002",
-        "DL-16-003"
+        "DL-16-003",
+        "DL-16-004"
       ],
-      "note": "REQ-002 delta: retro icerigi etkilenmedi, DL-16-003 ile yeniden onaylandi (ucuncu cift-commit gozlemi, Oneri 1 P1e yukseltildi)."
+      "note": "REQ-003 delta: retro yeniden onaylandı (DL-16-004)."
     },
     "1-2": {
       "status": "done",
@@ -467,7 +470,7 @@
       }
     ]
   },
-  "updated_at": "2026-07-31T11:59:01.798Z",
+  "updated_at": "2026-07-31T12:01:20.806Z",
   "default_mode": "AUTOPILOT",
   "checkpoints": [
     {

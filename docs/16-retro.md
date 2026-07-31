@@ -34,5 +34,22 @@ Orchestrator dokümantasyonuna (`.claude/commands/pipeline-resume.md` ve CLAUDE.
 1. `scripts/lib/commit-queue.cjs` → `nextPending()` atomik UPDATE+RETURNING deseniyle yeniden yazılmalı (Öneri 1); test: iki eşzamanlı `--drain` çağrısının aynı job'ı yalnız BİR kez işlediğini doğrulayan regresyon testi eklenmeli.
 2. CLAUDE.md kural 3 (commit tarifi) altına "dashboard koşuyorsa kuyruk zaten otomatik boşalır, elle `--drain` yalnız dashboard KAPALIYSA gereklidir" notu eklenebilir (Öneri 2).
 
+## Ek doğrulama (↺ REQ-003 delta, 2026-07-31 — /pipeline-resume)
+Bu koşuda **Faz 7 STALE_UNFLAGGED** bulgusuyla başlandı: bir önceki oturum
+`docs/07-security.md`'ye `DL-07-003`'e atıf yazmış ama dosyayı hiç oluşturmadan
+ve fazı kapatmadan kesilmişti (kanıt: gate yapısal olarak geçiyordu ama
+`decisions/DL-07-003.md` diskte yoktu — doctor'ın `STALE_UNFLAGGED` "DL doğrula"
+adımı TAM da bunun için var). Ayrıca Faz 9'un TASK-010 implementasyonu (bir
+önceki oturumdan uncommitted kalmış) whole-repo SEC-2 testini yanlış-pozitif
+kırıyordu (istemci-taraflı `fetch()` sunucu çağrısı sanılmış) ve istemci kodu
+SEC-19'u ihlal ediyordu (`data.message` — sunucu sözleşmesinde olmayan alan).
+İkisi de kapanmadan önce yakalanıp düzeltildi. Commit-queue'nun bilinen yarış
+koşulu (yukarıdaki temalar) bu koşuda **tekrarlanmadı** — dashboard süreci
+koşmadığından her faz kapanışında yalnız CLI `commit-queue.mjs --drain` elle
+çağrıldı ve tek commit üretti (bir istisna: Faz 9 test-commit isteği ilk
+denemede otomatik drain OLMADI, elle `--drain` çağrılınca sorunsuz işlendi —
+kuyruk kalıcı olduğu için veri kaybı olmadı, yalnız gecikme oldu).
+
 ## Kalite kapısı raporu
 - "En az 1 somut süreç iyileştirmesi" → ✅ (2 öneri: commit-queue atomik claim [P2] + dokümantasyon notu [P3], her ikisi de bu koşunun kendi AUTOFORGE-FEEDBACK.md bulgusundan türetildi)
+- REQ-003 deltası → ✅ retro içeriği etkilenmedi, yukarıdaki gözlemle yeniden onaylandı (DL-16-004).
