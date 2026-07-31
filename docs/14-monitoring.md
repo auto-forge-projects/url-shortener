@@ -16,7 +16,7 @@
 
 ## Kritik akış izleme (kalite kapısı)
 - **Kritik risk 1 — NFR-1 (≤200ms p95):** her istek için `Router` seviyesinde latency ölçülüp loglanır (`method path status duration_ms`); p95 threshold aşımı tekil log satırından grep edilebilir (`awk`/log toplayıcı). LITE'ta ayrı bir metrik sunucusu yok — log tabanlı görünürlük yeterli kabul edildi.
-- **Kritik risk 2 — DB kalıcılığı (Faz 5 açık risk):** `/data` volume mount edilmemişse (bkz. checkpoint Faz 12: `deploy/remote-deploy.sh` `-v` bağlamıyor) restart sonrası tüm linkler kaybolur. Alert mekanizması yok (LITE) ama health check DB dosyasının varlığını dolaylı yakalar (yoksa hızlı-fail loglanır) → operatör log'dan fark eder. **Teknik borç:** Faz 15'e taşınır (deploy script'e `-v` eklenmesi).
+- **Kritik risk 2 — DB kalıcılığı (Faz 5 açık risk) — ÇÖZÜLDÜ v0.1.1 (↺ REQ-001, DL-12-002):** `deploy/remote-deploy.sh` artık `/data`'yı isimli bir Docker volume'a (`${PROJECT}-data`) bağlıyor; restart/redeploy sonrası linkler kaybolmaz. Alert mekanizması yine yok (LITE) ama health check DB dosyasının varlığını dolaylı yakalamaya devam eder (yoksa hızlı-fail loglanır).
 - **Error rate:** 5xx oranı log'dan (`status>=500` satır sayısı / toplam) hesaplanabilir; ayrı dashboard/alerting altyapısı bu ölçekte (LITE, solo) kurulmadı — bilinçli kapsam dışı.
 
 ## Kalite kapısı raporu

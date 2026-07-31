@@ -1,10 +1,10 @@
 {
   "schema_version": 2,
-  "revision": 124,
+  "revision": 127,
   "project": "url-shortener",
   "workspace": "workspace/url-shortener",
   "profile": "LITE",
-  "current_phase": "14",
+  "current_phase": "15",
   "status": "running",
   "active_agents": [],
   "phases": {
@@ -233,9 +233,17 @@
     "14": {
       "status": "done",
       "mode": "AUTOPILOT",
-      "started_at": "2026-07-27T01:23:00.000Z",
+      "started_at": "2026-07-31T03:56:52.784Z",
       "gate_passed": true,
-      "completed_at": "2026-07-27T01:24:00.000Z"
+      "completed_at": "2026-07-31T04:02:00.000Z",
+      "artifacts": [
+        "docs/14-monitoring.md"
+      ],
+      "decisions": [
+        "DL-14-001",
+        "DL-14-002"
+      ],
+      "note": "REQ-001 delta: Kritik risk 2 notu cozuldu olarak guncellendi (DL-14-002)."
     },
     "15": {
       "status": "done",
@@ -276,10 +284,10 @@
   ],
   "history": [
     {
-      "at": "2026-07-31T04:01:00.000Z",
+      "at": "2026-07-31T04:02:00.000Z",
       "event": "phase_reclosed",
-      "phase": "13",
-      "detail": "REQ-001 delta: patch bump v0.1.1, DL-13-003"
+      "phase": "14",
+      "detail": "REQ-001 delta: monitoring notu guncellendi, DL-14-002"
     }
   ],
   "budget": {
@@ -405,10 +413,18 @@
         "model_recommended": "haiku",
         "gate_passed": true,
         "at": "2026-07-31T04:01:00.000Z"
+      },
+      {
+        "phase": "14",
+        "duration_s": 307,
+        "model": null,
+        "model_recommended": "sonnet",
+        "gate_passed": true,
+        "at": "2026-07-31T04:02:00.000Z"
       }
     ]
   },
-  "updated_at": "2026-07-31T03:56:12.460Z",
+  "updated_at": "2026-07-31T03:56:58.105Z",
   "default_mode": "AUTOPILOT",
   "checkpoints": [
     {
