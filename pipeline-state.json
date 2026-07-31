@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "revision": 146,
+  "revision": 149,
   "project": "url-shortener",
   "workspace": "workspace/url-shortener",
   "profile": "LITE",
@@ -128,7 +128,7 @@
       "completed_at": "2026-07-27T00:35:54.029Z"
     },
     "9": {
-      "status": "running",
+      "status": "done",
       "mode": "AUTOPILOT",
       "started_at": "2026-07-31T04:08:36.756Z",
       "tasks": [
@@ -138,36 +138,37 @@
         },
         {
           "title": "REQ-002: create-handler/server.js fix (green)",
-          "status": "in_progress"
+          "status": "done"
         },
         {
           "title": "REQ-002: remote-deploy.sh BASE_URL env fix",
-          "status": "pending"
+          "status": "done"
         },
         {
           "title": "npm test yeşil (100/100)",
-          "status": "pending"
+          "status": "done"
         },
         {
           "title": "DL-09-002 yaz",
-          "status": "pending"
+          "status": "done"
         },
         {
           "title": "kapıyı doğrula + commit talep et + push",
-          "status": "pending"
+          "status": "in_progress"
         }
       ],
       "gate_passed": true,
-      "completed_at": "2026-07-27T00:58:30.000Z",
+      "completed_at": "2026-07-31T06:55:00.000Z",
       "artifacts": [
         "src/",
         "tests/",
         "package.json"
       ],
       "decisions": [
-        "DL-09-001"
+        "DL-09-001",
+        "DL-09-002"
       ],
-      "note": "9 TASK TDD ile tamamlandı (98 test yeşil, mekanik kapı: npm test + red→green commit sırası kanıtı geçti). Kesintili koşumdan (ORPHANED_RUN) resume edildi — diskte tam olan iş task-per-task test→impl commit çiftleri halinde push edildi."
+      "note": "REQ-002 delta: BASE_URL yoksa short_url artik hic donmuyor (DL-06-001 sozlesmesi uygulandi) + remote-deploy.sh BASE_URL=https://HOST env eklendi. 100/100 test yesil (mekanik kapi: npm test + red->green commit sirasi kaniti gecti)."
     },
     "11": {
       "status": "done",
@@ -443,10 +444,18 @@
         "model_recommended": "sonnet",
         "gate_passed": true,
         "at": "2026-07-31T04:04:00.000Z"
+      },
+      {
+        "phase": "9",
+        "duration_s": 9983,
+        "model": null,
+        "model_recommended": "sonnet",
+        "gate_passed": true,
+        "at": "2026-07-31T06:55:00.000Z"
       }
     ]
   },
-  "updated_at": "2026-07-31T06:54:00.473Z",
+  "updated_at": "2026-07-31T06:54:49.560Z",
   "default_mode": "AUTOPILOT",
   "checkpoints": [
     {
