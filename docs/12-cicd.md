@@ -38,6 +38,13 @@ taahhüdüyle (`docs/05-architecture.md:92`) tutarsızdı; kullanıcı raporu
 isimli volume mount (`${PROJECT}-data:/data`) eklendi — bkz. DL-12-002.
 `docs/15-maintenance.md` TD-1 buna göre kapatıldı.
 
+## Bilinen boşluk — ÇÖZÜLDÜ (REQ-002, DL-12-003)
+`deploy/remote-deploy.sh` container'a `BASE_URL` env'i hiç geçmiyordu; prod'da
+`short_url` yanıtları `localhost`'a düşüyordu (kod tarafı DL-09-002'de düzeltildi,
+yalnız BASE_URL yoksa alanı hiç döndürmüyor). `start_container()`'a
+`-e "BASE_URL=https://${HOST}"` eklendi — `HOST` zaten workflow'dan geçiyordu,
+ek secret gerekmedi. Bkz. DL-12-003.
+
 ## Kalite kapısı raporu
 - ✅ Pipeline artefaktları mevcut: `ci.yml` + `deploy-image.yml` (scaffold) + yeni `Dockerfile`.
 - ✅ `Dockerfile` gerçekten build ediliyor (`docker build` başarılı, 230MB imaj).
