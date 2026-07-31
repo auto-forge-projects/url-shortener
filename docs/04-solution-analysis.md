@@ -60,7 +60,43 @@ benzersizlik hem üretici hem PRIMARY KEY tarafından iki katmanlı garanti edil
 | NFR-3 %100 doğruluk | Commit'lenmiş satır = kalıcı eşleme; `:memory:` DB ile entegrasyon testi |
 | NFR-4 çakışma 0 | `code` PRIMARY KEY (depo düzeyi) + rastgele 62^7 uzay + retry (uygulama düzeyi) |
 
+## REQ-003 delta (2026-07-31) — FR-4 web arayüzü
+
+**Backend çözüm kararlarına etki: YOK.** FR-4 mevcut `POST /api/shorten`'ın ÖNÜNE bir istemci ekler;
+yeni veri, yeni depo erişimi, yeni kod üretim yolu yoktur → Karar 1 (`node:sqlite` + `LinkStore`) ve
+Karar 2 (rastgele base62(7) + PK retry) **aynen geçerli**, DL-04-001/002 yeniden açılmadı.
+Tek yeni karar problemi: sayfa hangi biçimde paketlenip servis edilecek?
+
+### Karar 3 — Web arayüzünün paketlenme/servis biçimi
+- **F — Sunucu içi inline HTML dizesi** (`src/static-page.js` sabit şablon; `GET /` bunu döner, disk erişimi yok).
+- **G — Frontend framework + bundle** (React/Vite; build çıktısı imaja kopyalanır).
+- **H — Diskten servis edilen statik dosyalar** (`public/index.html` + genel statik dosya handler'ı).
+
+| Kriter | F: inline HTML dizesi | G: framework + bundle | H: diskten statik dosya |
+|--------|----------------------|-----------------------|--------------------------|
+| Sıfır dış bağımlılık (DL-04-001/DL-05-002 kararı) | ✅ ek paket yok | ❌ npm ağacı + build zinciri | ✅ paket yok |
+| Karmaşıklık (LITE bütçesi 7b) | En düşük (~40 LOC, 1 modül) | Yüksek (toolchain, ayrı build/test) | Orta (MIME + yol çözümleme) |
+| Güvenlik yüzeyi | ✅ dosya yolu girdisi YOK → path traversal imkânsız | ⚠️ bağımlılık zinciri (A06 tedarik zinciri riski) | ❌ statik handler = yeni traversal/yol doğrulama yüzeyi (docs/07 SEC ile çelişir) |
+| Faz 12 paketleme (read-only rootfs, tek container) | ✅ değişiklik gerekmez (kod içinde) | ❌ yeni build aşaması + COPY | ⚠️ ek `COPY public/` + yol varsayımı |
+| NFR-1 (≤200ms) | ✅ bellekten sabit yanıt, DB'ye dokunmaz | ✅ | ⚠️ istek başına disk okuma (önbellek gerekir) |
+| Test edilebilirlik (`node:test`) | ✅ modül doğrudan import edilir | ❌ ayrı test koşucusu ister | ⚠️ fixture dosya kurulumu |
+| Geri alınabilirlik | Yüksek (tek modül + tek route silinir) | Düşük (build/CI/imaj kalıcı olarak değişir) | Orta |
+
+**Seçim: F.** G, talebin dar kapsamı ("kullanabileceğim link yok") için ürünün tüm yapı-zincirini
+kalıcı olarak değiştirir — kilitlenme riski en yüksek, geri alınabilirliği en düşük seçenek.
+H bağımsız bir *statik dosya sunucusu* yüzeyi doğurur; bu, FR-4'ün getirmediği bir saldırı yüzeyidir.
+F ile FR-4, mevcut mimarinin içine tek modül + tek route olarak sığar.
+
+**Sıfır bağımlılık teyidi:** FR-4 için ek npm paketi, frontend framework ve build adımı YOKTUR;
+sayfa `node:http` yanıtı olarak dönen sabit HTML + vanilla JS'tir. `package.json` bağımlılıkları
+değişmez, Faz 9'un sıfır-bağımlılık hedefi ve tek-container paketleme korunur.
+
+**Faz 5'e devredilen kısıt (yeni değil, mevcut kararın sonucu):** `applySecurityHeaders` her yanıta
+`default-src 'none'` CSP uygular → inline `<script>`/`<style>` ve sayfanın `fetch('/api/shorten')`
+çağrısı **bloklanır**. Bu bir mimari yerleştirme sorusudur (route'a özgü CSP + JS'in nereden geldiği),
+`docs/05-architecture.md` REQ-003 deltasında çözülür. CSP gevşetilmesi (`unsafe-inline`) seçenek DEĞİLDİR.
+
 ## Kalite kapısı raporu
-- "En az 2 alternatif karşılaştırıldı" → ✅ (Karar 1: 3 alternatif × 12 kriter; Karar 2: 2 alternatif × 5 kriter)
-- "Seçim NFR'lere bağlandı" → ✅ (NFR-1..4 hem matriste hem eşleme tablosunda satır satır)
-- Decision Log → ✅ DL-04-001 (depolama), DL-04-002 (kod üretimi)
+- "En az 2 alternatif karşılaştırıldı" → ✅ (Karar 1: 3 alternatif × 12 kriter; Karar 2: 2 alternatif × 5 kriter; **Karar 3/REQ-003: 3 alternatif × 7 kriter**)
+- "Seçim NFR'lere bağlandı" → ✅ (NFR-1..4 hem matriste hem eşleme tablosunda satır satır; FR-4 yeni NFR getirmedi, NFR-1 Karar 3 matrisinde kontrol edildi)
+- Decision Log → ✅ DL-04-001 (depolama), DL-04-002 (kod üretimi), **DL-04-003 (REQ-003 istemci biçimi)**

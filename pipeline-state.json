@@ -1,10 +1,10 @@
 {
   "schema_version": 2,
-  "revision": 174,
+  "revision": 178,
   "project": "url-shortener",
   "workspace": "workspace/url-shortener",
   "profile": "LITE",
-  "current_phase": "3",
+  "current_phase": "4",
   "status": "running",
   "active_agents": [],
   "phases": {
@@ -59,7 +59,7 @@
     "4": {
       "status": "done",
       "mode": "AUTOPILOT",
-      "started_at": "2026-07-27T00:24:15.935Z",
+      "started_at": "2026-07-31T11:31:26.843Z",
       "gate_passed": true,
       "artifacts": [
         "docs/04-solution-analysis.md"
@@ -68,7 +68,8 @@
         "DL-04-001",
         "DL-04-002"
       ],
-      "completed_at": "2026-07-27T00:27:01.595Z"
+      "completed_at": "2026-07-27T00:27:01.595Z",
+      "note": "REQ-003 delta: FR-4 backend çözümünü değiştirmiyor; Karar 3 (istemci biçimi) = inline HTML dizesi, sıfır bağımlılık teyit edildi (DL-04-003)"
     },
     "5": {
       "status": "done",
@@ -308,6 +309,11 @@
     {
       "event": "cycle_closed",
       "detail": "REQ-002 v0.1.2 olarak yayinlandi"
+    },
+    {
+      "at": "2026-07-31T11:37:38.930Z",
+      "event": "zombie_agents_pruned",
+      "detail": "1 bayat ajan kaydı budandı (fazı koşmuyor — AF-090)"
     }
   ],
   "budget": {
@@ -468,7 +474,7 @@
       }
     ]
   },
-  "updated_at": "2026-07-31T11:29:48.873Z",
+  "updated_at": "2026-07-31T11:37:38.930Z",
   "default_mode": "AUTOPILOT",
   "checkpoints": [
     {
@@ -485,6 +491,11 @@
       "phase": 9,
       "at": "2026-07-31T06:55:09.635Z",
       "note": "REQ-002: BASE_URL yoksa short_url dönmüyor (yalnız code); prod domain deploy/remote-deploy.sh üzerinden BASE_URL env ile geliyor. Faz 12/13/14/15/16 delta olarak yeniden doğrulanacak."
+    },
+    {
+      "phase": 3,
+      "at": "2026-07-31T11:31:20.228Z",
+      "note": "REQ-003: FR-4 eklendi — GET / bir HTML form döner, mevcut POST /api/shorten (FR-1) çağrısını kullanır. FR-1..3 sözleşmesi değişmedi."
     }
   ],
   "product": {
