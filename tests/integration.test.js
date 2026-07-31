@@ -191,3 +191,22 @@ test('malformed / oversized / wrong-content-type requests never create a reachab
     server.close();
   }
 });
+
+test('FR-4 (REQ-003): GET / serves the web UI and GET /app.js the client script, without stealing the redirect 404 path', async () => {
+  const server = createServer({ dbPath: ':memory:', baseUrl: 'http://127.0.0.1' });
+  const port = await listen(server);
+  try {
+    const root = await get(port, '/');
+    assert.equal(root.status, 200);
+
+    const script = await get(port, '/app.js');
+    assert.equal(script.status, 200);
+
+    // Route order regression (DL-05-004): the new static routes must sit
+    // BEFORE the redirect catch-all, but an unknown code must still 404.
+    const stillNotFound = await get(port, '/zzzzzzz');
+    assert.equal(stillNotFound.status, 404);
+  } finally {
+    server.close();
+  }
+});

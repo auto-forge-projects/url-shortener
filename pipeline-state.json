@@ -1,10 +1,10 @@
 {
   "schema_version": 2,
-  "revision": 194,
+  "revision": 197,
   "project": "url-shortener",
   "workspace": "workspace/url-shortener",
   "profile": "LITE",
-  "current_phase": "8",
+  "current_phase": "9",
   "status": "running",
   "active_agents": [],
   "phases": {
@@ -141,10 +141,10 @@
         },
         {
           "title": "TASK-010: static-page-handler.js + router.js + server.js implement (green)",
-          "status": "pending"
+          "status": "in_progress"
         },
         {
-          "title": "npm test yeşil (104/104)",
+          "title": "npm test yeşil (110/110)",
           "status": "pending"
         },
         {
@@ -152,7 +152,7 @@
           "status": "pending"
         },
         {
-          "title": "HANDOFF/kapıyı doğrula + commit talep et + push",
+          "title": "kapıyı doğrula + commit talep et + push",
           "status": "pending"
         }
       ],
@@ -468,7 +468,7 @@
       }
     ]
   },
-  "updated_at": "2026-07-31T11:54:55.207Z",
+  "updated_at": "2026-07-31T11:55:06.964Z",
   "default_mode": "AUTOPILOT",
   "checkpoints": [
     {
