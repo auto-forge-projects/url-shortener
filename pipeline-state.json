@@ -1,11 +1,11 @@
 {
   "schema_version": 2,
-  "revision": 138,
+  "revision": 140,
   "project": "url-shortener",
   "workspace": "workspace/url-shortener",
   "profile": "LITE",
-  "current_phase": 16,
-  "status": "completed",
+  "current_phase": 9,
+  "status": "running",
   "active_agents": [],
   "phases": {
     "0": {
@@ -128,9 +128,9 @@
       "completed_at": "2026-07-27T00:35:54.029Z"
     },
     "9": {
-      "status": "done",
+      "status": "running",
       "mode": "AUTOPILOT",
-      "started_at": "2026-07-27T00:37:21.951Z",
+      "started_at": "2026-07-31T04:08:36.756Z",
       "tasks": [
         {
           "title": "TASK-001 iskelet+LinkStore port",
@@ -285,10 +285,10 @@
   },
   "feedback_loops": [
     {
-      "from": "REQ-001",
-      "to": "12",
-      "reason": "Kullanici raporu: uygulama acilmiyor -> kok neden TD-1/DL-12-001 (remote-deploy.sh /data icin kalici volume mount etmiyor)",
-      "at": "2026-07-31T03:53:00.000Z"
+      "from": "REQ-002",
+      "to": "9",
+      "reason": "short_url yanıtı BASE_URL prod'da set edilmediği için localhost döner — dışarıdan erişilemez",
+      "at": "2026-07-31T00:00:00.000Z"
     }
   ],
   "pending_human_review": [
@@ -303,6 +303,10 @@
       "at": "2026-07-31T04:05:00.000Z",
       "event": "cycle_closed",
       "detail": "REQ-001 v0.1.1 olarak yayinlandi"
+    },
+    {
+      "event": "cycle_opened",
+      "detail": "REQ-002: BASE_URL prod fallback bugı — Faz 9 yeniden açıldı"
     }
   ],
   "budget": {
@@ -455,7 +459,7 @@
       }
     ]
   },
-  "updated_at": "2026-07-31T03:58:46.309Z",
+  "updated_at": "2026-07-31T04:08:40.370Z",
   "default_mode": "AUTOPILOT",
   "checkpoints": [
     {
@@ -504,7 +508,7 @@
     "verified_at": "2026-07-27T18:48:42.376Z",
     "verified_by": "probe"
   },
-  "cycle": 2,
+  "cycle": 3,
   "requests": [
     {
       "id": "REQ-001",
@@ -517,6 +521,17 @@
       "cycle": 2,
       "notify_email": "sametemek@windowslive.com",
       "shipped_in": "v0.1.1"
+    },
+    {
+      "id": "REQ-002",
+      "text": "Uygulama adresi olan https://url-shortener.apps.sametemek.com üzerinden erişim sağlayamıyorum.",
+      "at": "2026-07-31T00:00:00.000Z",
+      "status": "in_delta",
+      "phases": [
+        "9"
+      ],
+      "cycle": 3,
+      "notify_email": "sametemek@windowslive.com"
     }
   ]
 }
