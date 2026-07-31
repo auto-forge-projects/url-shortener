@@ -67,3 +67,7 @@ Ek çapraz-kesim güvenlik/güvenilirlik testleri (SEC-1/3/4/5/6/7/8/9/10/11/13/
 - "Kritik senaryolar %100 geçti" → ✅ 99/99 test geçiyor; FR-1..3 ve NFR-1..4'ün her AC'si en az bir testle izlenebilir (yukarıdaki tablo).
 - Eksik bulunan tek kritik senaryo (FR-1 AC2 — aynı URL'in iki kez kısaltılması) test eklenerek kapatıldı; implementasyon DEĞİŞTİRİLMEDİ (yalnız `tests/integration.test.js`'e 1 yeni test eklendi).
 - Gate sonucu: **GEÇTİ**.
+
+## REQ-002 delta yeniden doğrulama (2026-07-31, AF-091)
+- `create-handler.test.js`'e 1 yeni regresyon testi eklendi: "no BASE_URL -> code only, no short_url" — toplam **100/100 geçiyor**.
+- Bu, DL-09-002'nin kod fix'inin (BASE_URL yoksa `short_url` alanı hiç dönmez) doğrudan kanıtıdır; FR/NFR sözleşmesi değişmedi, sıfırdan test planı gerekmedi.

@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "revision": 150,
+  "revision": 153,
   "project": "url-shortener",
   "workspace": "workspace/url-shortener",
   "profile": "LITE",
@@ -175,7 +175,7 @@
       "mode": "AUTOPILOT",
       "started_at": "2026-07-27T00:59:00.000Z",
       "gate_passed": true,
-      "completed_at": "2026-07-27T01:05:00.000Z",
+      "completed_at": "2026-07-31T06:56:00.000Z",
       "artifacts": [
         "docs/11-test/test-plan.md",
         "docs/11-test/results.md"
@@ -183,7 +183,7 @@
       "decisions": [
         "DL-11-001"
       ],
-      "note": "16 kritik senaryo test edildi; FR/NFR izlenebilirlik tablosu tam. 1 eksik senaryo (FR-1 AC2, çift kısaltma çakışmasızlığı) tespit edilip tests/integration.test.js eklendi. 99/99 yeşil."
+      "note": "REQ-002 delta: yeni regresyon testi (BASE_URL yoksa code-only) eklendi, toplam 100/100 yeşil. FR/NFR izlenebilirlik tablosu etkilenmedi (BASE_URL davranışı zaten spesifik bir FR/NFR maddesi değil, DL-06-001 sözleşmesi) — kısa doğrulama notu, sıfırdan plan gerekmedi."
     },
     "12": {
       "status": "done",
@@ -455,7 +455,7 @@
       }
     ]
   },
-  "updated_at": "2026-07-31T06:54:54.253Z",
+  "updated_at": "2026-07-31T06:56:14.696Z",
   "default_mode": "AUTOPILOT",
   "checkpoints": [
     {
@@ -467,6 +467,11 @@
       "phase": 12,
       "at": "2026-07-27T01:10:26.410Z",
       "note": "url-shortener Dockerfile hazir (DB_PATH=/data/links.db, PORT=3000, non-root). Bilinen risk: deploy/remote-deploy.sh /data volume mount etmiyor, SQLite her deployda sifirlanabilir, Faz 15 teknik borcu."
+    },
+    {
+      "phase": 9,
+      "at": "2026-07-31T06:55:09.635Z",
+      "note": "REQ-002: BASE_URL yoksa short_url dönmüyor (yalnız code); prod domain deploy/remote-deploy.sh üzerinden BASE_URL env ile geliyor. Faz 12/13/14/15/16 delta olarak yeniden doğrulanacak."
     }
   ],
   "product": {
