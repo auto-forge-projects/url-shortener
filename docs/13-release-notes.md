@@ -1,7 +1,14 @@
-# url-shortener v0.1.2 — Release Notes
+# url-shortener v0.2.0 — Release Notes
 
-- Tarih: 2026-07-31 | SemVer: **v0.1.2** (0.x = API garanti yok) | Mod: AUTOPILOT
+- Tarih: 2026-07-31 | SemVer: **v0.2.0** (0.x = API garanti yok) | Mod: AUTOPILOT
 > Sürüm, Faz 8 planındaki M1 milestone'u ile tutarlı (tek milestone, tüm FR'ler kapsandı).
+
+## v0.2.0 — Değişiklik (↺ REQ-003, 2026-07-31)
+- **Kullanıcı talebi:** "bu uygulamayla alakalı sadece sağlık ucu var. uygulamayı kullanabileceğim link yok. uygulamanın köküne uygulamayı kullanabileceğim bir web sayfası hazırlar mısın." — ürünün ilk kullanıcı-arayüzü eksikliği.
+- **Yeni özellik (FR-4):** `GET /` artık bir HTML form sunar (URL girilir, `Kısalt` tıklanır, mevcut `POST /api/shorten` (FR-1) çağrılır, sonuç/hata sayfada gösterilir); `GET /app.js` istemci scriptini sunar. **Minor bump** (yeni özellik, geriye dönük uyumsuzluk yok — mevcut API/redirect sözleşmesi değişmedi).
+- **Güvenlik (Faz 7 REQ-003 delta, DL-07-003):** yeni 5 gereksinim (SEC-17..21) — XSS-güvenli DOM yazımı (`textContent` yalnız), route'a özgü CSP, istemci-içi sabit hata mesajı eşlemesi (SEC-19), statik route sertleştirmesi, çerez/CORS yasağı. RA-1..RA-3 risk kabulleri değişmedi.
+- **Kapsam:** FR-1/2/3 ve NFR'ler değişmedi; yeni route'lar mevcut redirect/rate-limit bütçelerini tüketmez (DL-05-004).
+- **Test:** `tests/static-page-handler.test.js` (yeni, 5 test) + route sırası regresyon testleri — toplam 110/110 yeşil (DL-11-002).
 
 ## v0.1.2 — Değişiklik (↺ REQ-002, 2026-07-31)
 - **Kullanıcı talebi:** "https://url-shortener.apps.sametemek.com üzerinden erişim sağlayamıyorum" — kök neden `BASE_URL` prod'da hiçbir yerde set edilmediği için dönen `short_url`'ün her zaman `http://localhost:3000/<code>` olması (dışarıdan erişilemez).
@@ -22,6 +29,7 @@
 - **FR-1** `POST /api/shorten` — geçerli http(s) URL için benzersiz 7 haneli base62 kod üretir (≤200ms p95), çakışmada ≤3 retry.
 - **FR-2** `GET /:code` — kayıtlı kod → 302 orijinal adrese; bilinmeyen kod → 404.
 - **FR-3** Geçersiz şema/sözdizimi/kontrol karakteri/2048 karakter üstü girdi → 400, hiçbir kayıt oluşturulmaz.
+- **FR-4** (v0.2.0) `GET /` — form ile web arayüzünden kısaltma; `GET /app.js` — istemci scripti.
 - `GET /health` — servis durumu (deploy health-check + Docker `HEALTHCHECK` bunu kullanır).
 
 ## Güvenlik (docs/07-security.md)
