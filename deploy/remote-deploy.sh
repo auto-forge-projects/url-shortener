@@ -41,7 +41,14 @@ docker pull "$IMAGE"
 
 start_container() { # $1=imaj — eskiyi durdurup yeni container'ı başlatır
   docker rm -f "$PROJECT" >/dev/null 2>&1 || true
-  docker run -d --name "$PROJECT" --restart unless-stopped -p "127.0.0.1:${HOST_PORT}:${PORT}" "$1" >/dev/null
+  # TD-1/DL-12-002: /data isimli bir Docker volume'a bağlanır — container her
+  # `rm -f`+`run` döngüsünde yeniden yaratılsa da SQLite dosyası (kısa linkler)
+  # bu volume'da kalıcı kalır (Dockerfile VOLUME ["/data"] bildirimi tek başına
+  # bunu garanti etmez, host tarafında isimli/bind mount şart).
+  docker run -d --name "$PROJECT" --restart unless-stopped \
+    -p "127.0.0.1:${HOST_PORT}:${PORT}" \
+    -v "${PROJECT}-data:/data" \
+    "$1" >/dev/null
 }
 
 health_ok() { # container çalışıyor + crash-loop DEĞİL (+ HTTP 2xx/3xx, curl+endpoint varsa)

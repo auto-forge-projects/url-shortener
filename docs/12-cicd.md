@@ -30,12 +30,13 @@
 - Test imajı ve konteyner temizlendi (`docker rm -f` / `docker rmi`) — yerel
   Docker ortamında artık kalıntı yok.
 
-## Bilinen boşluk (bu fazın kapsamı dışı, DL-12-001'de kayıtlı)
-`deploy/remote-deploy.sh` container'ı `-v` ile `/data`'yı bağlamıyor — her
-deploy'da SQLite dosyası potansiyel olarak sıfırlanabilir. Mimari dokümanın
-taahhüdüyle (`docs/05-architecture.md:92`) tutarsız; `deploy/*.sh`'a bu fazda
-dokunulmadı (görev kısıtı). `docs/15-maintenance.md`'ye teknik borç olarak
-taşınmalı.
+## Bilinen boşluk (bu fazın kapsamı dışı, DL-12-001'de kayıtlı) — ÇÖZÜLDÜ (REQ-001, DL-12-002)
+`deploy/remote-deploy.sh` container'ı `-v` ile `/data`'yı bağlamıyordu — her
+deploy'da SQLite dosyası potansiyel olarak sıfırlanabiliyordu. Mimari dokümanın
+taahhüdüyle (`docs/05-architecture.md:92`) tutarsızdı; kullanıcı raporu
+("Uygulama açılmıyor", REQ-001, 2026-07-31) sonrası `start_container()`'a
+isimli volume mount (`${PROJECT}-data:/data`) eklendi — bkz. DL-12-002.
+`docs/15-maintenance.md` TD-1 buna göre kapatıldı.
 
 ## Kalite kapısı raporu
 - ✅ Pipeline artefaktları mevcut: `ci.yml` + `deploy-image.yml` (scaffold) + yeni `Dockerfile`.

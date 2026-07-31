@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "revision": 117,
+  "revision": 118,
   "project": "url-shortener",
   "workspace": "workspace/url-shortener",
   "profile": "LITE",
@@ -197,7 +197,7 @@
       "note": "16 kritik senaryo test edildi; FR/NFR izlenebilirlik tablosu tam. 1 eksik senaryo (FR-1 AC2, çift kısaltma çakışmasızlığı) tespit edilip tests/integration.test.js eklendi. 99/99 yeşil."
     },
     "12": {
-      "status": "running",
+      "status": "done",
       "mode": "AUTOPILOT",
       "started_at": "2026-07-31T03:53:07.156Z",
       "gate_passed": true,
@@ -205,12 +205,14 @@
       "artifacts": [
         ".github/workflows/",
         "Dockerfile",
-        "docs/12-cicd.md"
+        "docs/12-cicd.md",
+        "deploy/remote-deploy.sh"
       ],
       "decisions": [
-        "DL-12-001"
+        "DL-12-001",
+        "DL-12-002"
       ],
-      "note": "Dockerfile (node:22-alpine, non-root, /data volume, HEALTHCHECK) eklendi; build+run+/health dogrulandi (230MB imaj). CI/deploy workflow scaffolddan hazirdi, dokunulmadi."
+      "note": "REQ-001 delta: start_container() artik -v ${PROJECT}-data:/data ile kalici volume kullaniyor (TD-1 kok neden duzeltmesi). src/ degismedi."
     },
     "13": {
       "status": "done",
@@ -269,9 +271,10 @@
   ],
   "history": [
     {
-      "at": "2026-07-31T03:53:00.000Z",
-      "event": "cycle_opened",
-      "detail": "REQ-001: Uygulama acilmiyor -> Faz 12 yeniden acildi (TD-1 kok neden duzeltmesi)"
+      "at": "2026-07-31T04:00:00.000Z",
+      "event": "phase_reclosed",
+      "phase": "12",
+      "detail": "REQ-001 delta: remote-deploy.sh volume fix, DL-12-002"
     }
   ],
   "budget": {
@@ -392,7 +395,7 @@
       }
     ]
   },
-  "updated_at": "2026-07-31T03:53:07.157Z",
+  "updated_at": "2026-07-31T03:54:16.547Z",
   "default_mode": "AUTOPILOT",
   "checkpoints": [
     {
