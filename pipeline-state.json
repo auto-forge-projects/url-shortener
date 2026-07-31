@@ -1,10 +1,10 @@
 {
   "schema_version": 2,
-  "revision": 199,
+  "revision": 201,
   "project": "url-shortener",
   "workspace": "workspace/url-shortener",
   "profile": "LITE",
-  "current_phase": "9",
+  "current_phase": "11",
   "status": "running",
   "active_agents": [],
   "phases": {
@@ -157,7 +157,7 @@
         }
       ],
       "gate_passed": true,
-      "completed_at": "2026-07-31T06:55:00.000Z",
+      "completed_at": "2026-07-31T11:58:00.000Z",
       "artifacts": [
         "src/",
         "tests/",
@@ -167,7 +167,7 @@
         "DL-09-001",
         "DL-09-002"
       ],
-      "note": "REQ-002 delta: BASE_URL yoksa short_url artik hic donmuyor (DL-06-001 sozlesmesi uygulandi) + remote-deploy.sh BASE_URL=https://HOST env eklendi. 100/100 test yesil (mekanik kapi: npm test + red->green commit sirasi kaniti gecti)."
+      "note": "REQ-003 delta: TASK-010 static-page-handler eklendi (GET / form + GET /app.js). SEC-17..21 uygulandı; kapanışta SEC-2 test yanlış-pozitifi ve SEC-19 ihlali (data.message) düzeltildi. 110/110 test yeşil (red→green commit sırası kanıtı geçti)."
     },
     "11": {
       "status": "done",
@@ -293,13 +293,9 @@
   "pending_human_review": [],
   "history": [
     {
-      "event": "recovered",
-      "detail": "STALE_UNFLAGGED faz 7: DL-07-003 eksikti, yazıldı; status=done olarak kapatıldı"
-    },
-    {
-      "at": "2026-07-31T11:50:28.778Z",
-      "event": "zombie_agents_pruned",
-      "detail": "1 bayat ajan kaydı budandı (fazı koşmuyor — AF-090)"
+      "event": "phase_closed",
+      "phase": 9,
+      "detail": "REQ-003 delta kapandı"
     }
   ],
   "budget": {
@@ -468,7 +464,7 @@
       }
     ]
   },
-  "updated_at": "2026-07-31T11:55:23.537Z",
+  "updated_at": "2026-07-31T11:56:20.124Z",
   "default_mode": "AUTOPILOT",
   "checkpoints": [
     {
