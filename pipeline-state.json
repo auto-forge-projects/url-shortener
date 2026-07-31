@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "revision": 140,
+  "revision": 144,
   "project": "url-shortener",
   "workspace": "workspace/url-shortener",
   "profile": "LITE",
@@ -133,40 +133,28 @@
       "started_at": "2026-07-31T04:08:36.756Z",
       "tasks": [
         {
-          "title": "TASK-001 iskelet+LinkStore port",
-          "status": "done"
+          "title": "REQ-002: BASE_URL regresyon testi yaz (red)",
+          "status": "in_progress"
         },
         {
-          "title": "TASK-002 UrlValidator",
-          "status": "done"
+          "title": "REQ-002: create-handler/server.js fix (green)",
+          "status": "pending"
         },
         {
-          "title": "TASK-003 CodeGenerator",
-          "status": "done"
+          "title": "REQ-002: remote-deploy.sh BASE_URL env fix",
+          "status": "pending"
         },
         {
-          "title": "TASK-004 SqliteLinkStore",
-          "status": "done"
+          "title": "npm test yeşil (100/100)",
+          "status": "pending"
         },
         {
-          "title": "TASK-005 LinkService",
-          "status": "done"
+          "title": "DL-09-002 yaz",
+          "status": "pending"
         },
         {
-          "title": "TASK-006 createHandler",
-          "status": "done"
-        },
-        {
-          "title": "TASK-007 redirectHandler",
-          "status": "done"
-        },
-        {
-          "title": "TASK-008 HTTP server+router",
-          "status": "done"
-        },
-        {
-          "title": "TASK-009 e2e entegrasyon testleri",
-          "status": "done"
+          "title": "kapıyı doğrula + commit talep et + push",
+          "status": "pending"
         }
       ],
       "gate_passed": true,
@@ -291,13 +279,7 @@
       "at": "2026-07-31T00:00:00.000Z"
     }
   ],
-  "pending_human_review": [
-    {
-      "decision": "DL-07-002",
-      "konu": "Guvenlik risk kabulleri (RA-1/RA-2/RA-3)",
-      "aksiyon": "Kullanici /pipeline-decision ile onayla/reddet"
-    }
-  ],
+  "pending_human_review": [],
   "history": [
     {
       "at": "2026-07-31T04:05:00.000Z",
@@ -307,6 +289,11 @@
     {
       "event": "cycle_opened",
       "detail": "REQ-002: BASE_URL prod fallback bugı — Faz 9 yeniden açıldı"
+    },
+    {
+      "at": "2026-07-31T04:08:51.552Z",
+      "event": "decision_approve",
+      "detail": "DL-07-002"
     }
   ],
   "budget": {
@@ -459,7 +446,7 @@
       }
     ]
   },
-  "updated_at": "2026-07-31T04:08:40.370Z",
+  "updated_at": "2026-07-31T06:53:24.352Z",
   "default_mode": "AUTOPILOT",
   "checkpoints": [
     {

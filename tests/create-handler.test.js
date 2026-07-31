@@ -135,6 +135,17 @@ test('SEC-4: exceeding the rate limit for this IP returns 429 with Retry-After',
   assert.ok(res2.headers['Retry-After']);
 });
 
+test('DL-06-001/REQ-002: no BASE_URL -> 201 with code only, no short_url (never leak localhost)', async () => {
+  const { handler } = makeHandler({ baseUrl: '' });
+  const req = fakeReq({ body: JSON.stringify({ url: 'https://example.com/page' }) });
+  const res = fakeRes();
+  await handler(req, res);
+  assert.equal(res.statusCode, 201);
+  const parsed = JSON.parse(res.body);
+  assert.equal(typeof parsed.code, 'string');
+  assert.equal('short_url' in parsed, false);
+});
+
 test('rejected requests never write a row to the store (FR-3)', async () => {
   const { handler, store } = makeHandler();
   const req = fakeReq({ body: JSON.stringify({ url: 'file:///etc/passwd' }) });
