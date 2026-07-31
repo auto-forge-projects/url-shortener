@@ -1,11 +1,11 @@
 {
   "schema_version": 2,
-  "revision": 210,
+  "revision": 212,
   "project": "url-shortener",
   "workspace": "workspace/url-shortener",
   "profile": "LITE",
   "current_phase": "16",
-  "status": "running",
+  "status": "completed",
   "active_agents": [],
   "phases": {
     "0": {
@@ -299,9 +299,8 @@
   "pending_human_review": [],
   "history": [
     {
-      "event": "phase_closed",
-      "phase": 9,
-      "detail": "REQ-003 delta kapandı"
+      "event": "cycle_closed",
+      "detail": "REQ-003 v0.2.0 olarak yayinlandi"
     }
   ],
   "budget": {
@@ -470,7 +469,7 @@
       }
     ]
   },
-  "updated_at": "2026-07-31T12:01:20.806Z",
+  "updated_at": "2026-07-31T12:01:54.271Z",
   "default_mode": "AUTOPILOT",
   "checkpoints": [
     {
@@ -564,12 +563,13 @@
       "id": "REQ-003",
       "text": "bu uygulamayla alakalı sadece sağlık ucu var. uygulamayı kullanabileceğim link yok. uygulamanın köküne uygulamayı kullanabileceğim bir web sayfası hazırlar mısın.",
       "at": "2026-07-31T11:28:41.000Z",
-      "status": "in_delta",
+      "status": "shipped",
       "phases": [
         "3"
       ],
       "cycle": 4,
-      "notify_email": "sametemek@windowslive.com"
+      "notify_email": "sametemek@windowslive.com",
+      "shipped_in": "v0.2.0"
     }
   ]
 }

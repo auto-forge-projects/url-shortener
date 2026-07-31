@@ -1,0 +1,2 @@
+Pipeline tamamlandı — 2026-07-31T12:04:00.000Z (cycle 4, REQ-003 v0.2.0)
+Bu işaret CI susturmayı kaldırır (.githooks/commit-msg artık [skip ci] eklemez).
