@@ -1,10 +1,10 @@
 {
   "schema_version": 2,
-  "revision": 132,
+  "revision": 135,
   "project": "url-shortener",
   "workspace": "workspace/url-shortener",
   "profile": "LITE",
-  "current_phase": "16",
+  "current_phase": 16,
   "status": "running",
   "active_agents": [],
   "phases": {
@@ -263,9 +263,17 @@
     "16": {
       "status": "done",
       "mode": "AUTOPILOT",
-      "started_at": "2026-07-27T01:26:30.000Z",
+      "started_at": "2026-07-31T03:58:11.578Z",
       "gate_passed": true,
-      "completed_at": "2026-07-27T01:27:30.000Z"
+      "completed_at": "2026-07-31T04:04:00.000Z",
+      "artifacts": [
+        "docs/16-retro.md"
+      ],
+      "decisions": [
+        "DL-16-001",
+        "DL-16-002"
+      ],
+      "note": "REQ-001 delta: icerik etkilenmedi, ek dogrulama notu eklendi (DL-16-002), yeniden onaylandi."
     },
     "1-2": {
       "status": "done",
@@ -292,10 +300,10 @@
   ],
   "history": [
     {
-      "at": "2026-07-31T04:03:00.000Z",
+      "at": "2026-07-31T04:04:00.000Z",
       "event": "phase_reclosed",
-      "phase": "15",
-      "detail": "REQ-001 delta: TD-1 kapandi, DL-15-002"
+      "phase": "16",
+      "detail": "REQ-001 delta: yeniden onaylandi, DL-16-002"
     }
   ],
   "budget": {
@@ -437,10 +445,18 @@
         "model_recommended": "haiku",
         "gate_passed": true,
         "at": "2026-07-31T04:03:00.000Z"
+      },
+      {
+        "phase": "16",
+        "duration_s": 348,
+        "model": null,
+        "model_recommended": "sonnet",
+        "gate_passed": true,
+        "at": "2026-07-31T04:04:00.000Z"
       }
     ]
   },
-  "updated_at": "2026-07-31T03:57:30.251Z",
+  "updated_at": "2026-07-31T03:58:18.072Z",
   "default_mode": "AUTOPILOT",
   "checkpoints": [
     {

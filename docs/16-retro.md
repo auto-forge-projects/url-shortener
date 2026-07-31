@@ -17,6 +17,9 @@ Commit kuyruğunun `nextPending()` fonksiyonu atomik bir "claim" işlemi yapmıy
 | Eşzamanlı erişimde "oku-sonra-yaz" deseni yarış koşuluna açık | commit-queue yarış koşulu bulgusu (bu koşu, henüz AF numarasız) | `nextPending()` SELECT + ayrı UPDATE — iki süreç arasında atomik değil; state-db tarafında `withWriteTx`/`BEGIN IMMEDIATE` (AF-104/M1) bu deseni zaten çözmüştü, commit-queue aynı ilkeyi almadı |
 | Headless özerklikte commit'i asla ELLE çalıştırmama disiplini | AF-105, AF-106 | Bu koşuda kural sorunsuz işledi: `--request-commit` + `commit-queue.mjs --drain` iki kez (Faz 13, 14, 15 kapanışlarında) sorunsuz çalıştı — geçmiş "izin bekleyip asılma" hatası tekrarlanmadı |
 
+## Ek doğrulama (↺ REQ-001 delta, 2026-07-31)
+Aynı yarış koşulu bu delta koşumunda (Faz 12-15 reclose) BİR KEZ DAHA gözlendi — bu sefer dashboard-vs-CLI değil, **iki farklı proje** (`url-shortener` ve eşzamanlı çalışan `ball-bounce`) aynı paylaşımlı `commit_queue` tablosunu aynı anda boşaltırken (id 90 için `cc858bd` + ardından yalnız `pipeline-state.json` farkı taşıyan `6ec4335`; id 93 için de benzer `1f8d2c1`+`2463385` çifti). Sonuç yine zararsızdı (push başarılı, mekanik kapı etkilenmedi) ama **Öneri 1'in önceliği P2'den daha aciliyetli değerlendirilmeli** — tekrarlanma tek koşumda değil, farklı projeler arası da gerçekleşiyor.
+
 ## Somut süreç iyileştirmeleri (kalite kapısı: ≥1)
 ### Öneri 1 — commit-queue'da atomik claim **[P2, önerildi — henüz uygulanmadı]**
 `scripts/lib/commit-queue.cjs:nextPending()` tek SELECT yerine atomik `UPDATE ... SET status='processing' WHERE id = (SELECT id FROM commit_queue WHERE status='pending' ... LIMIT 1) RETURNING *` deseni (ya da eşdeğer `BEGIN IMMEDIATE` transaction) kullanmalı — iki süreç (dashboard tick + CLI `--drain`) aynı job'ı asla ikinci kez claim edemez. Ek/alternatif: `--drain` çağrısı `dashboard/runs/server.pid` canlılığını kontrol edip "dashboard zaten boşaltıyor" uyarısı versin.
