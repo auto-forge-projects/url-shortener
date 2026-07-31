@@ -1,10 +1,10 @@
 {
   "schema_version": 2,
-  "revision": 178,
+  "revision": 181,
   "project": "url-shortener",
   "workspace": "workspace/url-shortener",
   "profile": "LITE",
-  "current_phase": "4",
+  "current_phase": "5",
   "status": "running",
   "active_agents": [],
   "phases": {
@@ -74,7 +74,7 @@
     "5": {
       "status": "done",
       "mode": "AUTOPILOT",
-      "started_at": "2026-07-27T00:27:11.480Z",
+      "started_at": "2026-07-31T11:37:43.700Z",
       "gate_passed": true,
       "artifacts": [
         "docs/05-architecture.md"
@@ -84,7 +84,8 @@
         "DL-05-002",
         "DL-05-003"
       ],
-      "completed_at": "2026-07-27T00:29:35.509Z"
+      "completed_at": "2026-07-27T00:29:35.509Z",
+      "note": "REQ-003 delta: Routera staticPageHandler dalı (catch-all GETten ÖNCE) + rotaya özgü CSP; yeni bileşen/veri modeli yok (DL-05-004)"
     },
     "6": {
       "status": "done",
@@ -474,7 +475,7 @@
       }
     ]
   },
-  "updated_at": "2026-07-31T11:37:38.930Z",
+  "updated_at": "2026-07-31T11:37:48.471Z",
   "default_mode": "AUTOPILOT",
   "checkpoints": [
     {
