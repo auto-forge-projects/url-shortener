@@ -71,3 +71,10 @@ Ek çapraz-kesim güvenlik/güvenilirlik testleri (SEC-1/3/4/5/6/7/8/9/10/11/13/
 ## REQ-002 delta yeniden doğrulama (2026-07-31, AF-091)
 - `create-handler.test.js`'e 1 yeni regresyon testi eklendi: "no BASE_URL -> code only, no short_url" — toplam **100/100 geçiyor**.
 - Bu, DL-09-002'nin kod fix'inin (BASE_URL yoksa `short_url` alanı hiç dönmez) doğrudan kanıtıdır; FR/NFR sözleşmesi değişmedi, sıfırdan test planı gerekmedi.
+
+## REQ-003 delta yeniden doğrulama (2026-07-31, AF-091 — FR-4 web arayüzü)
+- Yeni test dosyası `tests/static-page-handler.test.js` (5 test): sayfa/CSP/script içeriği + SEC-19 hata eşlemesi.
+- `tests/router.test.js`'e 2, `tests/integration.test.js`'e 1 yeni test eklendi (route sırası regresyonu: `/` ve `/app.js` redirect catch-all'a düşmüyor, bilinmeyen kod hâlâ 404).
+- `tests/security-invariants.test.js` düzeltildi (kapanışta bulunan sapma, bkz. DL-09-003): whole-repo SEC-2 taraması istemci-taraflı `fetch()`'i yanlış pozitif sayıyordu; sunucu kodu ile istemci scripti ayrıştırılıp ayrı ayrı doğrulanacak şekilde 1 test ikiye bölündü (net +1).
+- Toplam **110/110 geçiyor**. FR-4 kabul kriterleri (form → kısaltma, sonuç gösterimi, hata gösterimi) `static-page-handler.test.js` + `integration.test.js` ile izlenebilir; FR/NFR 1-3 izlenebilirlik tablosu değişmedi.
+- Gate sonucu: **GEÇTİ**.

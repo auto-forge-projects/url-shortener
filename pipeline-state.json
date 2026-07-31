@@ -1,10 +1,10 @@
 {
   "schema_version": 2,
-  "revision": 202,
+  "revision": 204,
   "project": "url-shortener",
   "workspace": "workspace/url-shortener",
   "profile": "LITE",
-  "current_phase": "11",
+  "current_phase": "12",
   "status": "running",
   "active_agents": [],
   "phases": {
@@ -174,15 +174,16 @@
       "mode": "AUTOPILOT",
       "started_at": "2026-07-27T00:59:00.000Z",
       "gate_passed": true,
-      "completed_at": "2026-07-31T06:56:00.000Z",
+      "completed_at": "2026-07-31T11:59:00.000Z",
       "artifacts": [
         "docs/11-test/test-plan.md",
         "docs/11-test/results.md"
       ],
       "decisions": [
-        "DL-11-001"
+        "DL-11-001",
+        "DL-11-002"
       ],
-      "note": "REQ-002 delta: yeni regresyon testi (BASE_URL yoksa code-only) eklendi, toplam 100/100 yeşil. FR/NFR izlenebilirlik tablosu etkilenmedi (BASE_URL davranışı zaten spesifik bir FR/NFR maddesi değil, DL-06-001 sözleşmesi) — kısa doğrulama notu, sıfırdan plan gerekmedi."
+      "note": "REQ-003 delta: FR-4 web arayüzü test kapsamı eklendi (static-page-handler.test.js + route sırası testleri) + Faz 9deki SEC-2 test yanlış-pozitifi burada da doğrulandı. 110/110 yeşil."
     },
     "12": {
       "status": "done",
@@ -464,7 +465,7 @@
       }
     ]
   },
-  "updated_at": "2026-07-31T11:56:21.300Z",
+  "updated_at": "2026-07-31T11:57:17.460Z",
   "default_mode": "AUTOPILOT",
   "checkpoints": [
     {
