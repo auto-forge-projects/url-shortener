@@ -1,11 +1,11 @@
 {
   "schema_version": 2,
-  "revision": 136,
+  "revision": 138,
   "project": "url-shortener",
   "workspace": "workspace/url-shortener",
   "profile": "LITE",
   "current_phase": 16,
-  "status": "running",
+  "status": "completed",
   "active_agents": [],
   "phases": {
     "0": {
@@ -300,10 +300,9 @@
   ],
   "history": [
     {
-      "at": "2026-07-31T04:04:00.000Z",
-      "event": "phase_reclosed",
-      "phase": "16",
-      "detail": "REQ-001 delta: yeniden onaylandi, DL-16-002"
+      "at": "2026-07-31T04:05:00.000Z",
+      "event": "cycle_closed",
+      "detail": "REQ-001 v0.1.1 olarak yayinlandi"
     }
   ],
   "budget": {
@@ -456,7 +455,7 @@
       }
     ]
   },
-  "updated_at": "2026-07-31T03:58:18.261Z",
+  "updated_at": "2026-07-31T03:58:46.309Z",
   "default_mode": "AUTOPILOT",
   "checkpoints": [
     {
@@ -511,12 +510,13 @@
       "id": "REQ-001",
       "text": "Uygulama açılmıyor",
       "at": "2026-07-31T03:53:00.000Z",
-      "status": "in_delta",
+      "status": "shipped",
       "phases": [
         "12"
       ],
       "cycle": 2,
-      "notify_email": "sametemek@windowslive.com"
+      "notify_email": "sametemek@windowslive.com",
+      "shipped_in": "v0.1.1"
     }
   ]
 }
