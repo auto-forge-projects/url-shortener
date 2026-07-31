@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "revision": 159,
+  "revision": 161,
   "project": "url-shortener",
   "workspace": "workspace/url-shortener",
   "profile": "LITE",
@@ -242,15 +242,16 @@
       "mode": "AUTOPILOT",
       "started_at": "2026-07-31T03:57:24.934Z",
       "gate_passed": true,
-      "completed_at": "2026-07-31T04:03:00.000Z",
+      "completed_at": "2026-07-31T07:00:00.000Z",
       "artifacts": [
         "docs/15-maintenance.md"
       ],
       "decisions": [
         "DL-15-001",
-        "DL-15-002"
+        "DL-15-002",
+        "DL-15-003"
       ],
-      "note": "REQ-001 delta: TD-1 kapandi olarak isaretlendi (DL-15-002)."
+      "note": "REQ-002 delta: test kor noktasi kapandi olarak isaretlendi (DL-15-003), yeni TD acilmadi."
     },
     "16": {
       "status": "done",
@@ -458,7 +459,7 @@
       }
     ]
   },
-  "updated_at": "2026-07-31T06:58:49.222Z",
+  "updated_at": "2026-07-31T06:59:37.716Z",
   "default_mode": "AUTOPILOT",
   "checkpoints": [
     {

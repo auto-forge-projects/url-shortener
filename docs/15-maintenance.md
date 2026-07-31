@@ -5,6 +5,7 @@
 
 ## Bilinen sorunlar
 - Host-portu-publish edilmiş dış erişim Faz 12'de sandbox kısıtı yüzünden test edilemedi (container-içi doğrulama + `HEALTHCHECK: healthy` yeterli kanıt kabul edildi; gerçek sunucuda `deploy/remote-deploy.sh` health probe'u ile doğrulanıyor).
+- ~~Test kör noktası: hiçbir test `BASE_URL`'siz prod yolunu (`require.main===module` fallback'i) egzersiz etmiyordu~~ — **ÇÖZÜLDÜ v0.1.2** (↺ REQ-002, DL-09-002): regresyon testi eklendi, yeni TD açılmadı (bug kapandı).
 
 ## Teknik borç (kalite kapısı: önceliklendirilmiş)
 | # | Borç | Kaynak (DL/review bulgusu) | Öncelik (P1/P2/P3) | Not |
@@ -19,7 +20,7 @@
 - Dependabot/otomasyon gerekmez (bağımlılık yok); Node major sürüm değişimlerinde `node:sqlite` API'sinin stable'a geçişi manuel izlenir (TD-2).
 
 ## Bakım ritmi
-- Her sürüm öncesi: `npm test` (99 test) yeşil + `docker build` başarılı kontrolü.
+- Her sürüm öncesi: `npm test` (100 test) yeşil + `docker build` başarılı kontrolü.
 - 3 ayda bir: Node LTS güncellemesi değerlendirmesi + TD-1'in (volume mount) hâlâ açık olup olmadığının kontrolü.
 
 ## Kalite kapısı raporu
